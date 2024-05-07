@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DeckApiServis {
 
@@ -20,7 +22,7 @@ public class DeckApiServis {
 
     public String deckTokenId(String json) {
         validateJson(json);
-        return deckTokenIdFronJson(json);
+        return deckTokenIdFromJson(json);
     }
 
     public int remainingCardMapper(String json) {
@@ -36,7 +38,7 @@ public class DeckApiServis {
     }
 
 
-    private String deckTokenIdFronJson(String json) {
+    private String deckTokenIdFromJson(String json) {
 
         try {
             JsonNode node = MAPPER.readTree(json);
@@ -84,7 +86,7 @@ public class DeckApiServis {
     private List<Card> extractCardsFromJsonArray(JsonNode nodeArray) {
         List<Card> cards = new ArrayList<>();
         for (JsonNode node : nodeArray) {
-            int value = node.get("value").asInt();
+            int value = valueFromStringToInt(node.get("value").asText());
             Suit suit = Suit.fromStringtoSuit(node.get("suit").asText());
             cards.add(new Card(value, suit));
         }
@@ -99,6 +101,24 @@ public class DeckApiServis {
             throw new RuntimeException(e);
         }
 
+    }
+//============  Value mapper ====================
+    private static Map<String, Integer> cardValueSchema() {
+
+        Map<String, Integer> cardValues = new HashMap<>();
+        for (int i = 2; i < 11; i++) {
+            cardValues.put(Integer.toString(i), i);
+        }
+        cardValues.put("JACK", 11);
+        cardValues.put("QUEEN", 12);
+        cardValues.put("KING", 13);
+        cardValues.put("ACE", 14);
+
+        return cardValues;
+    }
+
+    private int valueFromStringToInt(String valueFromJson){
+        return cardValueSchema().get(valueFromJson);
     }
 }
 
