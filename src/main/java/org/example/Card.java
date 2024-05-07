@@ -9,11 +9,11 @@ public class Card {
     private int value;
 
     @JsonProperty("suit")
-    private Suite suite;
+    private Suit suit;
 
-    public Card(int value, Suite suite) {
+    public Card(int value, Suit suit) {
         this.value = value;
-        this.suite = suite;
+        this.suit = suit;
     }
 
     public Card() {
@@ -23,8 +23,8 @@ public class Card {
         return value;
     }
 
-    public Suite getSuite() {
-        return suite;
+    public Suit getSuite() {
+        return suit;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class Card {
     public String toString() {
         return "Card{" +
                 "value=" + value +
-                ", suite=" + suite +
+                ", suit=" + suit +
                 '}';
     }
 }
