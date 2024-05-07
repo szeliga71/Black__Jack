@@ -21,42 +21,35 @@ public class DeckApiServisTest {
 
 
     @Test
-    public void getNumberOfCardsInDeckFromResponseBodyNullArgument() {
+     void getNumberOfCardsInDeckFromResponseBodyNullArgument() {
 
         Assertions.assertThrows(IllegalArgumentException.class ,()->deckApiServis.remainingCardMapper(null));
     }
 
     @Test
-    public void getNumberOfCardsInDeckFromResponseBodyIllegalArgument() {
+     void getNumberOfCardsInDeckFromResponseBodyIllegalArgument() {
 
         Assertions.assertThrows(IllegalArgumentException.class ,()->deckApiServis.remainingCardMapper("444444efrfg"));
     }
 
     @Test
-    public void getNumberOfCardsInDeckFromResponseBodyNoRemainingFieldInJson() {
+     void getNumberOfCardsInDeckFromResponseBodyNoRemainingFieldInJson() {
 
         String json = "{\"success\": true,\"xxxxx\": 4}";
         Assertions.assertThrows(RuntimeException.class,()-> deckApiServis.remainingCardMapper(json));
 
     }
 
-   /* @Test
-    public void getNumberOfCardsInDeckFromResponseBodyIllegalValueInRemainingFieldInJson() {
-
-        String json = "{\"success\": true,\"remaining\": \"xxx\"}";
-        Assertions.assertThrows(RuntimeException.class,()-> deckApiServis.remainingCardMapper(json));
-
-    }*/
 
     @Test
-    public void getNumberOfCardsInDeckFromResponseBodyEmptyJson() {
+     void getNumberOfCardsInDeckFromResponseBodyEmptyJson() {
 
         String json = "";
         Assertions.assertThrows(IllegalArgumentException.class ,()->deckApiServis.remainingCardMapper(json));
 
     }
     @Test
-    public void getNumberOfCadsHappyPath(){
+     void getNumberOfCadsHappyPath(){
 
         when(response.body()).thenReturn("{\n" +
                 "    \"success\": true,\n" +
@@ -66,6 +59,14 @@ public class DeckApiServisTest {
                 "}");
         Assertions.assertEquals(52,deckApiServis.remainingCardMapper(response.body()));
     }
+    @Test
+     void getNumberOfCardsInDeckFromResponseBodyHappyPath2() {
+
+        String json = "{\"success\": true,\"remaining\": 9}";
+        Assertions.assertEquals(9, deckApiServis.remainingCardMapper(json));
+
+    }
+
 
    /* @Test
     public void getNumberOfCadsHappyPath1(){
@@ -77,9 +78,9 @@ public class DeckApiServisTest {
                 "    \"remaining\": 52\n" +
                 "}");
 
-    }*/
+    }
 
-   /* @Test
+   @Test
     public void getNumberOfCardsInDeckFromResponseBodyHappyTest() {
 
         responseTest = deckApiHandler.drawCards(deckId, 2);
@@ -96,15 +97,22 @@ public class DeckApiServisTest {
         Assertions.assertNotEquals(0, deckApiServis.remainingCardMapper(response.body()));
 
     }
-*/
-    @Test
-    public void getNumberOfCardsInDeckFromResponseBodyHappyTest2() {
+      @Test
+    public void getNumberOfCardsInDeckFromResponseBodyIllegalValueInRemainingFieldInJson() {
 
-        String json = "{\"success\": true,\"remaining\": 9}";
-        Assertions.assertEquals(9, deckApiServis.remainingCardMapper(json));
+        String json = "{\"success\": true,\"remaining\": \"xxx\"}";
+        Assertions.assertThrows(RuntimeException.class,()-> deckApiServis.remainingCardMapper(json));
 
     }
+*/
+//==============================   get deck id
+    @Test
+    public void getDeckIdFromResponseBodyEmptyArgument() {
 
+        String json = "";
+
+        Assertions.assertThrows(IllegalArgumentException.class, ()->deckApiServis.deckTokenId(json));
+    }
 
     @Test
     public void getDeckIdFromResponseBodyJsonNull() {
@@ -155,13 +163,7 @@ public class DeckApiServisTest {
         Assertions.assertNull(deckApiServis.deckTokenId(json));
     }
 */
-    @Test
-    public void getDeckIdFromResponseBodyEmptyArgument() {
 
-        String json = "";
-
-        Assertions.assertThrows(IllegalArgumentException.class, ()->deckApiServis.deckTokenId(json));
-    }
 /*
     @Test
     public void getDeckIdFromResponseBodyHappyTest() {
