@@ -10,16 +10,16 @@ public class DeckApiHandlerTest {
 
 
     private final HttpClient client = HttpClient.newHttpClient();
-    DeckApiHandler handler = new DeckApiHandler();
+    private final DeckApiHandler handler = new DeckApiHandler();
 
     @Test
     void getDeckHappyPath() {
-        Assertions.assertNotNull(handler.getShuffledDecks(2));
+        Assertions.assertNotNull(handler.getShuffledDecks(5));
     }
 
     @Test
     void getDecksHappyPath1() {
-        Assertions.assertEquals(200, handler.getShuffledDecks(2).statusCode());
+        Assertions.assertEquals(200, handler.getShuffledDecks(6).statusCode());
     }
 
     @Test
