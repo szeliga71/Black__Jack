@@ -12,16 +12,17 @@ public class DeckApiHandler {
 
     private final HttpClient client = HttpClient.newHttpClient();
     private HttpResponse<String> response;
-    private String drawDeckURL;
+    private final String getSchuffleBaseURL="https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=";
+    private final String drawCardsBaseURL="https://api.deckapi.com/v2/shuffled/decks/";
+
 
     public HttpResponse<String> getShuffledDecks(int numberOfDecks) {
 
         if (!(numberOfDecks > 3 && numberOfDecks <= 8)) {
             throw new IllegalArgumentException("Proszę podać ilość talii z przedziału od 4 do 8");
         }
-        drawDeckURL = "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=";
         try {
-            HttpRequest request = HttpRequest.newBuilder(new URI(drawDeckURL + numberOfDecks)).GET().build();
+            HttpRequest request = HttpRequest.newBuilder(new URI(getSchuffleBaseURL + numberOfDecks)).GET().build();
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
                 System.out.println("Blad podczas pobierania :" + response.statusCode());
@@ -42,7 +43,7 @@ public class DeckApiHandler {
             throw new IllegalArgumentException("prosze podac wlasciwy identyfikator talii");
         } else {
 
-            String drawCardsURL = "https://deckofcardsapi.com/api/deck/" + deckId + "/draw/?count=" + count;
+            String drawCardsURL = drawCardsBaseURL + deckId + "/draw/?count=" + count;
             try {
                 HttpRequest request = HttpRequest.newBuilder(new URI(drawCardsURL)).GET().build();
                 response = client.send(request, HttpResponse.BodyHandlers.ofString());
