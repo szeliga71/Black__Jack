@@ -38,7 +38,7 @@ public class DeckApiServis {
     }
 
 
-    private String deckTokenIdFromJson(String json) {
+    public String deckTokenIdFromJson(String json) {
 
         try {
             JsonNode node = MAPPER.readTree(json);
@@ -48,7 +48,7 @@ public class DeckApiServis {
         }
     }
 
-    private DeckToken parseIdFromJson(String json) {
+     public DeckToken parseIdFromJson(String json) {
         try {
             JsonNode node = MAPPER.readTree(json);
             deckToken.setDeckID(node.get("deck_id").asText());
@@ -59,7 +59,7 @@ public class DeckApiServis {
         return deckToken;
     }
 
-    private List<Card> parseCards(String json) {
+    public List<Card> parseCards(String json) {
         try {
             JsonNode rootNode = MAPPER.readTree(json);
             JsonNode nodeArray = rootNode.get("cards");
@@ -69,12 +69,12 @@ public class DeckApiServis {
                 return extractCardsFromJsonArray(nodeArray);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Blad w arsowaniu Json", e);
+            throw new RuntimeException("Blad w parsowaniu Json", e);
         }
 
     }
 
-    private void validateJson(String json) {
+    public void validateJson(String json) {
         if (json == null || json.isEmpty()) {
             throw new IllegalArgumentException("json jest nieprawidlowy ");
         }
@@ -83,7 +83,7 @@ public class DeckApiServis {
         }
     }
 
-    private List<Card> extractCardsFromJsonArray(JsonNode nodeArray) {
+    public List<Card> extractCardsFromJsonArray(JsonNode nodeArray) {
         List<Card> cards = new ArrayList<>();
         for (JsonNode node : nodeArray) {
             int value = valueFromStringToInt(node.get("value").asText());

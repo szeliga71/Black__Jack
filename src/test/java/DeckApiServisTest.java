@@ -1,12 +1,19 @@
 
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.example.Card;
 import org.example.DeckApiServis;
+import org.example.DeckToken;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.IOException;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 import static org.mockito.Mockito.when;
 
@@ -15,6 +22,8 @@ public class DeckApiServisTest {
 
     @Mock
     HttpResponse<String> response;
+
+
 
     private final DeckApiServis deckApiServis = new DeckApiServis();
 
@@ -67,6 +76,128 @@ public class DeckApiServisTest {
 
     }
 
+    @Test
+        void validateJsonTestNullArgument(){
+            Assertions.assertThrows(IllegalArgumentException.class ,()->deckApiServis.validateJson(null));
+        }
+    @Test
+    void validateJsonTestIllegalArgument(){
+        Assertions.assertThrows(IllegalArgumentException.class ,()->deckApiServis.validateJson("xxxSSSSvvvv"));
+    }
+    @Test
+    void validateJsonTestInvalidJson(){
+            String correctJson="{\"XXXXX\": true,\"remaining\": 9}";
+            Exception exception=Assertions.assertThrows(IllegalArgumentException.class,()->deckApiServis.validateJson(correctJson));
+        Assertions.assertEquals("json nie zawiera wymaganego klucza i pozytywnej wartosci",exception.getMessage());
+    }
+    @Test
+    void validateJsonTestEmptyJson(){
+        String emptyJson="";
+        Exception exception=Assertions.assertThrows(IllegalArgumentException.class,()->deckApiServis.validateJson(emptyJson));
+        Assertions.assertEquals("json jest nieprawidlowy ",exception.getMessage());
+    }
+
+    @Test
+    void validateJsonTestEmptyArgument(){
+        Assertions.assertThrows(IllegalArgumentException.class ,()->deckApiServis.validateJson(""));
+    }
+
+    @Test
+    void parseIdFromJsonArgumentNull(){
+        Assertions.assertThrows(RuntimeException.class,()->deckApiServis.parseIdFromJson(null));
+    }
+    @Test
+    void parseIdFromJsonTestIllegalArgument(){
+        String illegalJson="XXXXXXXX";
+        Assertions.assertThrows(RuntimeException.class,()->deckApiServis.parseIdFromJson(illegalJson));
+    }
+
+    @Test
+    void parseIdFromJsonHappyPath(){
+        when(response.body()).thenReturn("{\"success\": true,\"deck_id\": \"3p40paa87x90\",\"shuffled\": true,\"remaining\": 52}");
+        DeckToken deckToken=new DeckToken("3p40paa87x90");
+        Assertions.assertEquals(deckToken.getDeckID(),deckApiServis.deckTokenId(response.body()));
+    }
+
+    @Test
+    void deckTokenMapperTestHappyPath(){
+        when(response.body()).thenReturn("{\"success\": true,\"deck_id\": \"3p40paa87x90\",\"shuffled\": true,\"remaining\": 52}");
+        DeckToken deckToken=new DeckToken("3p40paa87x90");
+        String responseJson= response.body();
+        Assertions.assertEquals(deckToken.getDeckID(),deckApiServis.deckTokenId(responseJson));
+    }
+    @Test
+    void deckTokenMapperTestIllegalArgument() {
+        when(response.body()).thenReturn("{\"success\": true,\"xxxx\": \"3p40paa87x90\",\"shuffled\": true,\"remaining\": 52}");
+        String responseJson= response.body();
+        Assertions.assertThrows(RuntimeException.class,()->deckApiServis.deckTokenMapper(responseJson));
+    }
+    @Test
+    void deckTokenMapperTestEmptyArgument() {
+        when(response.body()).thenReturn("");
+        String responseJson= response.body();
+        Assertions.assertThrows(RuntimeException.class,()->deckApiServis.deckTokenMapper(responseJson));
+    }
+    @Test
+    void deckTokenMapperTestNullArgument() {
+        when(response.body()).thenReturn(null);
+        String responseJson= response.body();
+        Assertions.assertThrows(RuntimeException.class,()->deckApiServis.deckTokenMapper(responseJson));
+    }
+
+    @Test
+    void deckTokenIdFromJsonTestNullArgument(){
+        Assertions.assertThrows(RuntimeException.class,()->deckApiServis.deckTokenIdFromJson(null));
+    }
+    @Test
+    void deckTokenIdFromJsonTestEmptyArgument(){
+        String emptyString="";
+        Assertions.assertThrows(RuntimeException.class,()->deckApiServis.deckTokenIdFromJson(emptyString));
+    }
+    @Test
+    void deckTokenIdFromJsonTestIllegalArgument(){
+        when(response.body()).thenReturn("{\"success\": true,\"xxxx\": \"3p40paa87x90\",\"shuffled\": true,\"remaining\": 52}");
+        String responseJson= response.body();
+        Assertions.assertThrows(RuntimeException.class,()->deckApiServis.deckTokenIdFromJson(responseJson));
+    }
+    @Test
+    void deckTokenIdFromJsonTestHappyPath(){
+        when(response.body()).thenReturn("{\"success\": true,\"deck_id\": \"3p40paa87x90\",\"shuffled\": true,\"remaining\": 52}");
+        String responseJson= response.body();
+        Assertions.assertEquals("3p40paa87x90",deckApiServis.deckTokenIdFromJson(responseJson));
+    }
+   /* public List<Card> parseCards(String json) {
+        try {
+            JsonNode rootNode = MAPPER.readTree(json);
+            JsonNode nodeArray = rootNode.get("cards");
+            if (!nodeArray.isArray()) {
+                throw new IllegalArgumentException("To nie jest tablica kart");
+            } else {
+                return extractCardsFromJsonArray(nodeArray);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Blad w parsowaniu Json", e);
+        }
+
+    }
+       public List<Card> extractCardsFromJsonArray(JsonNode nodeArray) {
+        List<Card> cards = new ArrayList<>();
+        for (JsonNode node : nodeArray) {
+            int value = valueFromStringToInt(node.get("value").asText());
+            Suit suit = Suit.fromStringtoSuit(node.get("suit").asText());
+            cards.add(new Card(value, suit));
+        }
+        return cards;
+    }*/
+    @Test
+    void parseCardsNullArgument(){
+        Assertions.assertThrows(IllegalArgumentException.class,()->deckApiServis.parseCards(null));
+    }
+    @Test
+    void parseCardsIllegalArgument(){
+        String illegalJson="XXXXXXXX";
+        Assertions.assertThrows(RuntimeException.class,()->deckApiServis.parseCards(illegalJson));
+    }
 
    /* @Test
     public void getNumberOfCadsHappyPath1(){
