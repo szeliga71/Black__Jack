@@ -22,9 +22,10 @@ public class DeckApiHandlerTest {
     void getDecksHappyPath1() {
         Assertions.assertEquals(200, handler.getShuffledDecks(6).statusCode());
     }
+
     @Test
     void getDecksTooManyNumbersOfDeck() {
-        Assertions.assertThrows(IllegalArgumentException.class,()->handler.getShuffledDecks(10).statusCode());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> handler.getShuffledDecks(10).statusCode());
     }
 
     @Test
@@ -32,7 +33,6 @@ public class DeckApiHandlerTest {
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> handler.getShuffledDecks(0));
     }
-
 
     @Test
     void getDecksnvalidArgumentNegativeValue() {
@@ -49,13 +49,13 @@ public class DeckApiHandlerTest {
     @Test
     void drawCardsIncorrectFirstArgument() {
 
-        Assertions.assertThrows(RuntimeException.class,()-> handler.drawCards("xxxx", 2).statusCode());
+        Assertions.assertThrows(RuntimeException.class, () -> handler.drawCards("xxxx", 2).statusCode());
     }
 
     @Test
     void drawCardsIncorrectBothArguments() {
 
-        Assertions.assertThrows(RuntimeException.class, ()->handler.drawCards("xxxx", 0).statusCode());
+        Assertions.assertThrows(RuntimeException.class, () -> handler.drawCards("xxxx", 0).statusCode());
     }
 
     @Test

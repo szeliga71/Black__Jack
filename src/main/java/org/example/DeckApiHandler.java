@@ -18,7 +18,7 @@ public class DeckApiHandler {
 
     public HttpResponse<String> getShuffledDecks(int numberOfDecks) {
 
-        if (!(numberOfDecks > 3 && numberOfDecks <= 8)) {
+        if (!(numberOfDecks > 4 && numberOfDecks <= 8)) {
             throw new IllegalArgumentException("Proszę podać ilość talii z przedziału od 4 do 8");
         }
         try {
