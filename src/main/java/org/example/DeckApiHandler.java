@@ -12,8 +12,8 @@ public class DeckApiHandler {
 
     private final HttpClient client = HttpClient.newHttpClient();
     private HttpResponse<String> response;
-    private final String getSchuffleBaseURL="https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=";
-    private final String drawCardsBaseURL="https://api.deckapi.com/v2/shuffled/decks/";
+    private final String getSchuffleBaseURL = "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=";
+    private final String drawCardsBaseURL = "https://api.deckapi.com/v2/shuffled/decks/";
 
 
     public HttpResponse<String> getShuffledDecks(int numberOfDecks) {
@@ -33,6 +33,7 @@ public class DeckApiHandler {
         }
 
     }
+
     public HttpResponse<String> drawCards(String deckId, int count) {
 
         if (count > 2) {
