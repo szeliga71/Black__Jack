@@ -166,7 +166,106 @@ public class DeckApiServisTest {
         String responseJson= response.body();
         Assertions.assertEquals("3p40paa87x90",deckApiServis.deckTokenIdFromJson(responseJson));
     }
-   /* public List<Card> parseCards(String json) {
+    @Test
+    void deckTokenIdTestNullArgument(){
+        Assertions.assertThrows(IllegalArgumentException.class,()->deckApiServis.deckTokenId(null));
+    }
+    @Test
+    void deckTokenIdTestEmptyArgument(){
+        Assertions.assertThrows(IllegalArgumentException.class,()->deckApiServis.deckTokenId(""));
+    }
+    @Test
+    void deckTokenIdTestIllegalArgument(){
+        Assertions.assertThrows(IllegalArgumentException.class,()->deckApiServis.deckTokenId("vvd hz"));
+    }
+
+   @Test
+   void parseRemainingCardsHappyPath(){
+       when(response.body()).thenReturn("{\"success\": true,\"remaining\": 52}");
+       String happyJson= response.body();
+       Assertions.assertEquals(52,deckApiServis.parseRemainingCards(happyJson));
+   }
+    @Test
+    void parseRemainingCardsNotHappyPath(){
+        when(response.body()).thenReturn("{\"success\": true,\"remaining\": 52}");
+        String happyJson= response.body();
+        Assertions.assertNotEquals(5,deckApiServis.parseRemainingCards(happyJson));
+    }
+    @Test
+    void parseRemainingCardsEmptyArgument(){
+        when(response.body()).thenReturn("");
+        String happyJson= response.body();
+        Assertions.assertThrows(RuntimeException.class,()->deckApiServis.parseRemainingCards(happyJson));
+    }
+    @Test
+    void parseRemainingCardsNullArgument(){
+        when(response.body()).thenReturn(null);
+        String happyJson= response.body();
+        Assertions.assertThrows(RuntimeException.class,()->deckApiServis.parseRemainingCards(happyJson));
+    }
+    @Test
+    void parseRemainingCardsIllegalArgument(){
+        when(response.body()).thenReturn("gggGGTTmn");
+        String happyJson= response.body();
+        Assertions.assertThrows(RuntimeException.class,()->deckApiServis.parseRemainingCards(happyJson));
+    }
+    @Test
+    void parseRemainingCardsIllegalJson(){
+        when(response.body()).thenReturn("{\"xxxxx\": true,\"remaining\": 52}");
+        String happyJson= response.body();
+        Assertions.assertNotEquals(5,deckApiServis.parseRemainingCards(happyJson));
+    }
+    @Test
+    void parseRemainingCardsIllegalJson1(){
+        when(response.body()).thenReturn("{\"success\": true,\"xxxxxxxx\": 52}");
+        String happyJson= response.body();
+        Assertions.assertThrows(RuntimeException.class,()->deckApiServis.parseRemainingCards(happyJson));
+    }
+    @Test
+    void parseRemainingCardsIllegalRemainingValueInJson(){
+        when(response.body()).thenReturn("{\"success\": true,\"remaining\": nn}");
+        String happyJson= response.body();
+        Assertions.assertThrows(RuntimeException.class,()->deckApiServis.parseRemainingCards(happyJson));
+    }
+
+
+    @Test
+    void remainingCardMapperTestNullArgument(){
+       Assertions.assertThrows(RuntimeException.class,()->deckApiServis.remainingCardMapper(null));
+    }
+    @Test
+    void remainingCardMapperTestEmptyArgument(){
+        Assertions.assertThrows(RuntimeException.class,()->deckApiServis.remainingCardMapper(""));
+    }
+    @Test
+    void remainingCardMapperTestIllegalArgument(){
+        Assertions.assertThrows(RuntimeException.class,()->deckApiServis.remainingCardMapper("ffZTRnnK"));
+    }
+    @Test
+    void remainingCardMapperTestHappyPath(){
+       when(response.body()).thenReturn("{\"success\": true,\"remaining\": 78}");
+       String happyJson= response.body();
+        Assertions.assertEquals(78,deckApiServis.remainingCardMapper(happyJson));
+    }
+    @Test
+    void remainingCardMapperTestNotHappyPath(){
+        when(response.body()).thenReturn("{\"success\": true,\"remaining\": 78}");
+        String happyJson= response.body();
+        Assertions.assertNotEquals(3,deckApiServis.remainingCardMapper(happyJson));
+    }
+
+
+
+
+
+    /*  public List<Card> cardMapper(String json) {
+
+        validateJson(json);
+        return parseCards(json);
+    }
+
+
+    public List<Card> parseCards(String json) {
         try {
             JsonNode rootNode = MAPPER.readTree(json);
             JsonNode nodeArray = rootNode.get("cards");
@@ -198,6 +297,12 @@ public class DeckApiServisTest {
         String illegalJson="XXXXXXXX";
         Assertions.assertThrows(RuntimeException.class,()->deckApiServis.parseCards(illegalJson));
     }
+
+    @Test
+    void extractCardsFronJsonArrayTestEmptyArgument(){
+        Assertions.assertThrows(NullPointerException.class,()->deckApiServis.extractCardsFromJsonArray(null));
+    }
+
 
    /* @Test
     public void getNumberOfCadsHappyPath1(){

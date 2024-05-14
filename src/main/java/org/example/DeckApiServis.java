@@ -93,7 +93,7 @@ public class DeckApiServis {
         return cards;
     }
 
-    private int parseRemainingCards(String json) {
+    public int parseRemainingCards(String json) {
         try {
             JsonNode node = MAPPER.readTree(json);
             return node.get("remaining").asInt();
