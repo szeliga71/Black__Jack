@@ -32,7 +32,7 @@ public class Card {
         if (this == o) return true;
         if (!(o instanceof org.example.Card card)) return false;
 
-        return getValue()==card.getValue() && getSuite().equals(card.getSuite());
+        return getValue() == card.getValue() && getSuite().equals(card.getSuite());
     }
 
     @Override

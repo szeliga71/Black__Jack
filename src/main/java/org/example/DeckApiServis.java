@@ -48,7 +48,7 @@ public class DeckApiServis {
         }
     }
 
-     public DeckToken parseIdFromJson(String json) {
+    public DeckToken parseIdFromJson(String json) {
         try {
             JsonNode node = MAPPER.readTree(json);
             deckToken.setDeckID(node.get("deck_id").asText());
@@ -102,23 +102,48 @@ public class DeckApiServis {
         }
 
     }
-//============  Value mapper ====================
+
+    //============  Value mapper ====================
     private static Map<String, Integer> cardValueSchema() {
+
 
         Map<String, Integer> cardValues = new HashMap<>();
         for (int i = 2; i < 11; i++) {
             cardValues.put(Integer.toString(i), i);
         }
-        cardValues.put("JACK", 11);
-        cardValues.put("QUEEN", 12);
-        cardValues.put("KING", 13);
-        cardValues.put("ACE", 14);
+        cardValues.put("jack", 11);
+        cardValues.put("queen", 12);
+        cardValues.put("king", 13);
+        cardValues.put("ace", 14);
 
         return cardValues;
     }
 
-    private int valueFromStringToInt(String valueFromJson){
-        return cardValueSchema().get(valueFromJson);
+
+    public int valueFromStringToInt(String valueFromJson) {
+        if (valueFromJson == null || valueFromJson.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+        valueFromJson = valueFromJson.toLowerCase();
+        valueFromJson = valueFromJson.trim();
+        if ("king".equals(valueFromJson) || "queen".equals(valueFromJson) || "jack".equals(valueFromJson) || "ace".equals(valueFromJson)) {
+
+            return cardValueSchema().get(valueFromJson);
+        }
+
+        try {
+            int numberValue = Integer.parseInt(valueFromJson.trim());
+            if (numberValue > 1 && numberValue < 11) {
+                return cardValueSchema().get(valueFromJson.trim());
+            }
+        } catch (NumberFormatException e) {
+        }
+
+        throw new IllegalArgumentException("Nieprawidlowe wartosci opisujace karty");
     }
 }
+
+
+
+
 
