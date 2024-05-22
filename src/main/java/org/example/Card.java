@@ -1,22 +1,20 @@
 package org.example;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Card {
 
-    private int value;
+    private final int value;
 
-    @JsonProperty("suit")
-    private Suit suit;
+    private final Suit suit;
 
-    public Card(int value, Suit suit) {
+    @JsonCreator
+    public Card(@JsonProperty("value") int value, @JsonProperty("suit") Suit suit) {
         this.value = value;
         this.suit = suit;
-    }
-
-    public Card() {
     }
 
     public int getValue() {

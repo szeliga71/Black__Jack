@@ -6,8 +6,8 @@ public class Main {
 
         String st = "ace";
 
-        DeckApiServis deckApiServis = new DeckApiServis();
+        DeckServisMetods deckServisMetods = new DeckServisMetods();
 
-        System.out.println(deckApiServis.valueFromStringToInt(st));
+        System.out.println(deckServisMetods.valueFromStringToInt(st));
     }
 }

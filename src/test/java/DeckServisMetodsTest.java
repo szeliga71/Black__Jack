@@ -4,7 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Card;
-import org.example.DeckApiServis;
+import org.example.DeckServisMetods;
+import org.example.DeckMapper;
 import org.example.DeckToken;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,32 +22,33 @@ import static org.example.Suit.SPADES;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class DeckApiServisTest {
+public class DeckServisMetodsTest {
 
     @Mock
-    HttpResponse<String> response;
+    private HttpResponse<String> response;
 
 
-    private final DeckApiServis deckApiServis = new DeckApiServis();
+    private final DeckServisMetods deckServisMetods = new DeckServisMetods();
+    private final DeckMapper deckMapper = new DeckMapper();
 
 
     @Test
     void getNumberOfCardsInDeckFromResponseBodyNullArgument() {
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.remainingCardMapper(null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckMapper.remainingCardMapper(null));
     }
 
     @Test
     void getNumberOfCardsInDeckFromResponseBodyIllegalArgument() {
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.remainingCardMapper("444444efrfg"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckMapper.remainingCardMapper("444444efrfg"));
     }
 
     @Test
     void getNumberOfCardsInDeckFromResponseBodyNoRemainingFieldInJson() {
 
         String json = "{\"success\": true,\"xxxxx\": 4}";
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.remainingCardMapper(json));
+        Assertions.assertThrows(RuntimeException.class, () -> deckMapper.remainingCardMapper(json));
 
     }
 
@@ -56,7 +57,7 @@ public class DeckApiServisTest {
     void getNumberOfCardsInDeckFromResponseBodyEmptyJson() {
 
         String json = "";
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.remainingCardMapper(json));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckMapper.remainingCardMapper(json));
 
     }
 
@@ -69,62 +70,62 @@ public class DeckApiServisTest {
                 "    \"shuffled\": true,\n" +
                 "    \"remaining\": 52\n" +
                 "}");
-        Assertions.assertEquals(52, deckApiServis.remainingCardMapper(response.body()));
+        Assertions.assertEquals(52, deckMapper.remainingCardMapper(response.body()));
     }
 
     @Test
     void getNumberOfCardsInDeckFromResponseBodyHappyPath2() {
 
         String json = "{\"success\": true,\"remaining\": 9}";
-        Assertions.assertEquals(9, deckApiServis.remainingCardMapper(json));
+        Assertions.assertEquals(9, deckMapper.remainingCardMapper(json));
 
     }
 
     @Test
     void validateJsonTestNullArgument() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.validateJson(null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckServisMetods.validateJson(null));
     }
 
     @Test
     void validateJsonTestIllegalArgument() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.validateJson("xxxSSSSvvvv"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckServisMetods.validateJson("xxxSSSSvvvv"));
     }
 
     @Test
     void validateJsonTestInvalidJson() {
-        String correctJson = "{\"XXXXX\": true,\"remaining\": 9}";
-        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.validateJson(correctJson));
-        Assertions.assertEquals("json nie zawiera wymaganego klucza i pozytywnej wartosci", exception.getMessage());
+        String incorrectJson = "{: true,\"remaining\": 9}";
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> deckServisMetods.validateJson(incorrectJson));
+        Assertions.assertEquals("json jest nieprawidlowy 2 ", exception.getMessage());
     }
 
     @Test
     void validateJsonTestEmptyJson() {
         String emptyJson = "";
-        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.validateJson(emptyJson));
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> deckServisMetods.validateJson(emptyJson));
         Assertions.assertEquals("json jest nieprawidlowy ", exception.getMessage());
     }
 
     @Test
     void validateJsonTestEmptyArgument() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.validateJson(""));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckServisMetods.validateJson(""));
     }
 
     @Test
     void parseIdFromJsonArgumentNull() {
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.parseIdFromJson(null));
+        Assertions.assertThrows(RuntimeException.class, () -> deckServisMetods.parseIdFromJson(null));
     }
 
     @Test
     void parseIdFromJsonTestIllegalArgument() {
         String illegalJson = "XXXXXXXX";
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.parseIdFromJson(illegalJson));
+        Assertions.assertThrows(RuntimeException.class, () -> deckServisMetods.parseIdFromJson(illegalJson));
     }
 
     @Test
     void parseIdFromJsonHappyPath() {
         when(response.body()).thenReturn("{\"success\": true,\"deck_id\": \"3p40paa87x90\",\"shuffled\": true,\"remaining\": 52}");
         DeckToken deckToken = new DeckToken("3p40paa87x90");
-        Assertions.assertEquals(deckToken.getDeckID(), deckApiServis.deckTokenId(response.body()));
+        Assertions.assertEquals(deckToken.getDeckID(), deckMapper.deckTokenId(response.body()));
     }
 
     @Test
@@ -132,170 +133,170 @@ public class DeckApiServisTest {
         when(response.body()).thenReturn("{\"success\": true,\"deck_id\": \"3p40paa87x90\",\"shuffled\": true,\"remaining\": 52}");
         DeckToken deckToken = new DeckToken("3p40paa87x90");
         String responseJson = response.body();
-        Assertions.assertEquals(deckToken.getDeckID(), deckApiServis.deckTokenId(responseJson));
+        Assertions.assertEquals(deckToken.getDeckID(), deckMapper.deckTokenId(responseJson));
     }
 
     @Test
     void deckTokenMapperTestIllegalArgument() {
         when(response.body()).thenReturn("{\"success\": true,\"xxxx\": \"3p40paa87x90\",\"shuffled\": true,\"remaining\": 52}");
         String responseJson = response.body();
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.deckTokenMapper(responseJson));
+        Assertions.assertThrows(RuntimeException.class, () -> deckMapper.deckTokenMapper(responseJson));
     }
 
     @Test
     void deckTokenMapperTestEmptyArgument() {
         when(response.body()).thenReturn("");
         String responseJson = response.body();
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.deckTokenMapper(responseJson));
+        Assertions.assertThrows(RuntimeException.class, () -> deckMapper.deckTokenMapper(responseJson));
     }
 
     @Test
     void deckTokenMapperTestNullArgument() {
         when(response.body()).thenReturn(null);
         String responseJson = response.body();
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.deckTokenMapper(responseJson));
+        Assertions.assertThrows(RuntimeException.class, () -> deckMapper.deckTokenMapper(responseJson));
     }
 
     @Test
     void deckTokenIdFromJsonTestNullArgument() {
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.deckTokenIdFromJson(null));
+        Assertions.assertThrows(RuntimeException.class, () -> deckServisMetods.deckTokenIdFromJson(null));
     }
 
     @Test
     void deckTokenIdFromJsonTestEmptyArgument() {
         String emptyString = "";
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.deckTokenIdFromJson(emptyString));
+        Assertions.assertThrows(RuntimeException.class, () -> deckServisMetods.deckTokenIdFromJson(emptyString));
     }
 
     @Test
     void deckTokenIdFromJsonTestIllegalArgument() {
         when(response.body()).thenReturn("{\"success\": true,\"xxxx\": \"3p40paa87x90\",\"shuffled\": true,\"remaining\": 52}");
         String responseJson = response.body();
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.deckTokenIdFromJson(responseJson));
+        Assertions.assertThrows(RuntimeException.class, () -> deckServisMetods.deckTokenIdFromJson(responseJson));
     }
 
     @Test
     void deckTokenIdFromJsonTestHappyPath() {
         when(response.body()).thenReturn("{\"success\": true,\"deck_id\": \"3p40paa87x90\",\"shuffled\": true,\"remaining\": 52}");
         String responseJson = response.body();
-        Assertions.assertEquals("3p40paa87x90", deckApiServis.deckTokenIdFromJson(responseJson));
+        Assertions.assertEquals("3p40paa87x90", deckServisMetods.deckTokenIdFromJson(responseJson));
     }
 
     @Test
     void deckTokenIdTestNullArgument() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.deckTokenId(null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckMapper.deckTokenId(null));
     }
 
     @Test
     void deckTokenIdTestEmptyArgument() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.deckTokenId(""));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckMapper.deckTokenId(""));
     }
 
     @Test
     void deckTokenIdTestIllegalArgument() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.deckTokenId("vvd hz"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckMapper.deckTokenId("vvd hz"));
     }
 
     @Test
     void parseRemainingCardsHappyPath() {
         when(response.body()).thenReturn("{\"success\": true,\"remaining\": 52}");
         String happyJson = response.body();
-        Assertions.assertEquals(52, deckApiServis.parseRemainingCards(happyJson));
+        Assertions.assertEquals(52, deckServisMetods.parseRemainingCards(happyJson));
     }
 
     @Test
     void parseRemainingCardsNotHappyPath() {
         when(response.body()).thenReturn("{\"success\": true,\"remaining\": 52}");
         String happyJson = response.body();
-        Assertions.assertNotEquals(5, deckApiServis.parseRemainingCards(happyJson));
+        Assertions.assertNotEquals(5, deckServisMetods.parseRemainingCards(happyJson));
     }
 
     @Test
     void parseRemainingCardsEmptyArgument() {
         when(response.body()).thenReturn("");
         String happyJson = response.body();
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.parseRemainingCards(happyJson));
+        Assertions.assertThrows(RuntimeException.class, () -> deckServisMetods.parseRemainingCards(happyJson));
     }
 
     @Test
     void parseRemainingCardsNullArgument() {
         when(response.body()).thenReturn(null);
         String happyJson = response.body();
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.parseRemainingCards(happyJson));
+        Assertions.assertThrows(RuntimeException.class, () -> deckServisMetods.parseRemainingCards(happyJson));
     }
 
     @Test
     void parseRemainingCardsIllegalArgument() {
         when(response.body()).thenReturn("gggGGTTmn");
         String happyJson = response.body();
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.parseRemainingCards(happyJson));
+        Assertions.assertThrows(RuntimeException.class, () -> deckServisMetods.parseRemainingCards(happyJson));
     }
 
     @Test
     void parseRemainingCardsIllegalJson() {
         when(response.body()).thenReturn("{\"xxxxx\": true,\"remaining\": 52}");
         String happyJson = response.body();
-        Assertions.assertNotEquals(5, deckApiServis.parseRemainingCards(happyJson));
+        Assertions.assertNotEquals(5, deckServisMetods.parseRemainingCards(happyJson));
     }
 
     @Test
     void parseRemainingCardsIllegalJson1() {
         when(response.body()).thenReturn("{\"success\": true,\"xxxxxxxx\": 52}");
         String happyJson = response.body();
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.parseRemainingCards(happyJson));
+        Assertions.assertThrows(RuntimeException.class, () -> deckServisMetods.parseRemainingCards(happyJson));
     }
 
     @Test
     void parseRemainingCardsIllegalRemainingValueInJson() {
         when(response.body()).thenReturn("{\"success\": true,\"remaining\": nn}");
         String happyJson = response.body();
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.parseRemainingCards(happyJson));
+        Assertions.assertThrows(RuntimeException.class, () -> deckServisMetods.parseRemainingCards(happyJson));
     }
 
 
     @Test
     void remainingCardMapperTestNullArgument() {
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.remainingCardMapper(null));
+        Assertions.assertThrows(RuntimeException.class, () -> deckMapper.remainingCardMapper(null));
     }
 
     @Test
     void remainingCardMapperTestEmptyArgument() {
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.remainingCardMapper(""));
+        Assertions.assertThrows(RuntimeException.class, () -> deckMapper.remainingCardMapper(""));
     }
 
     @Test
     void remainingCardMapperTestIllegalArgument() {
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.remainingCardMapper("ffZTRnnK"));
+        Assertions.assertThrows(RuntimeException.class, () -> deckMapper.remainingCardMapper("ffZTRnnK"));
     }
 
     @Test
     void remainingCardMapperTestHappyPath() {
         when(response.body()).thenReturn("{\"success\": true,\"remaining\": 78}");
         String happyJson = response.body();
-        Assertions.assertEquals(78, deckApiServis.remainingCardMapper(happyJson));
+        Assertions.assertEquals(78, deckMapper.remainingCardMapper(happyJson));
     }
 
     @Test
     void remainingCardMapperTestNotHappyPath() {
         when(response.body()).thenReturn("{\"success\": true,\"remaining\": 78}");
         String happyJson = response.body();
-        Assertions.assertNotEquals(3, deckApiServis.remainingCardMapper(happyJson));
+        Assertions.assertNotEquals(3, deckMapper.remainingCardMapper(happyJson));
     }
 
     @Test
     void parseCardsNullArgument() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.parseCards(null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckServisMetods.parseCards(null));
     }
 
     @Test
     void parseCardsIllegalArgument() {
         String illegalJson = "XXXXXXXX";
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.parseCards(illegalJson));
+        Assertions.assertThrows(RuntimeException.class, () -> deckServisMetods.parseCards(illegalJson));
     }
 
     @Test
     void extractCardsFromJsonArrayTestNullArgument() {
-        Assertions.assertThrows(NullPointerException.class, () -> deckApiServis.extractCardsFromJsonArray(null));
+        Assertions.assertThrows(NullPointerException.class, () -> deckServisMetods.extractCardsFromJsonArray(null));
     }
 
     @Test
@@ -343,7 +344,7 @@ public class DeckApiServisTest {
         List<Card> cards = new ArrayList<>();
         cards.add(new Card(6, HEARTS));
         cards.add(new Card(5, SPADES));
-        Assertions.assertEquals(cards.get(1), deckApiServis.extractCardsFromJsonArray(jsonArray).get(1));
+        Assertions.assertEquals(cards.get(1), deckServisMetods.extractCardsFromJsonArray(jsonArray).get(1));
 
     }
 
@@ -372,14 +373,14 @@ public class DeckApiServisTest {
 
         List<Card> cards = new ArrayList<>();
 
-        Assertions.assertEquals(cards, deckApiServis.extractCardsFromJsonArray(jsonArray));
+        Assertions.assertEquals(cards, deckServisMetods.extractCardsFromJsonArray(jsonArray));
 
     }
 
     @Test
     void cardMapperTestNullArgument() {
 
-        Assertions.assertThrows(RuntimeException.class, () -> deckApiServis.cardMapper(null));
+        Assertions.assertThrows(RuntimeException.class, () -> deckMapper.cardMapper(null));
     }
 
     @Test
@@ -399,7 +400,7 @@ public class DeckApiServisTest {
 
         String illegalJson = response.body();
 
-        Assertions.assertEquals(cards, deckApiServis.cardMapper(illegalJson));
+        Assertions.assertEquals(cards, deckMapper.cardMapper(illegalJson));
 
     }
 
@@ -441,56 +442,56 @@ public class DeckApiServisTest {
 
         String happyJson = response.body();
 
-        Assertions.assertEquals(cards.get(1), deckApiServis.cardMapper(happyJson).get(1));
+        Assertions.assertEquals(cards.get(1), deckMapper.cardMapper(happyJson).get(1));
 
     }
 
     @Test
     void cardMapperTestIllegalArgument() {
         String illegalJson = "xxxxgggtrr";
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.cardMapper(illegalJson));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckMapper.cardMapper(illegalJson));
     }
 
     @Test
     void valueFromStringToIntLowerCaseString() {
 
         String cardValue = "jack";
-        Assertions.assertEquals(11, deckApiServis.valueFromStringToInt(cardValue));
+        Assertions.assertEquals(11, deckServisMetods.valueFromStringToInt(cardValue));
     }
 
     @Test
     void valueFromStringToIntUpperCaseString() {
 
         String cardValue = "QUEEN";
-        Assertions.assertEquals(12, deckApiServis.valueFromStringToInt(cardValue));
+        Assertions.assertEquals(12, deckServisMetods.valueFromStringToInt(cardValue));
     }
 
     @Test
     void valueFromStringToIntMixCaseString() {
 
         String cardValue = "JaCk";
-        Assertions.assertEquals(11, deckApiServis.valueFromStringToInt(cardValue));
+        Assertions.assertEquals(11, deckServisMetods.valueFromStringToInt(cardValue));
     }
 
     @Test
     void valueFromStringToIntNullString() {
 
         String cardValue = null;
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.valueFromStringToInt(cardValue));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckServisMetods.valueFromStringToInt(cardValue));
     }
 
     @Test
     void valueFromStringToIntEmptyString() {
 
         String cardValue = "";
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.valueFromStringToInt(cardValue));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckServisMetods.valueFromStringToInt(cardValue));
     }
 
     @Test
     void valueFromStringToIntIllegalString() {
 
         String cardValue = "625";
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.valueFromStringToInt(cardValue));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckServisMetods.valueFromStringToInt(cardValue));
 
     }
 
@@ -498,7 +499,7 @@ public class DeckApiServisTest {
     void valueFromStringToIntIllegalString1() {
 
         String cardValue = "xxxxxHHHHHHHqq";
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.valueFromStringToInt(cardValue));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckServisMetods.valueFromStringToInt(cardValue));
     }
 
     @Test
@@ -506,7 +507,7 @@ public class DeckApiServisTest {
 
         String json = "";
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.deckTokenId(json));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckMapper.deckTokenId(json));
     }
 
     @Test
@@ -514,7 +515,7 @@ public class DeckApiServisTest {
 
         String json = null;
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.deckTokenId(json));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckMapper.deckTokenId(json));
     }
 
     @Test
@@ -522,7 +523,7 @@ public class DeckApiServisTest {
 
         String json = "cdggrt";
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> deckApiServis.deckTokenId(json));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckMapper.deckTokenId(json));
     }
 
     @Test
@@ -531,7 +532,7 @@ public class DeckApiServisTest {
         String deckId = "deckId";
         String json = "{\"success\": true, \"deck_id\": \"" + deckId + "\"}";
 
-        Assertions.assertEquals(deckId, deckApiServis.deckTokenId(json));
+        Assertions.assertEquals(deckId, deckMapper.deckTokenId(json));
     }
 
 

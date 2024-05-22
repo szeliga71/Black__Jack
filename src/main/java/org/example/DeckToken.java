@@ -8,9 +8,6 @@ public class DeckToken {
         this.deckID = deckID;
     }
 
-    public DeckToken() {
-    }
-
     public String getDeckID() {
         return deckID;
     }
@@ -18,7 +15,6 @@ public class DeckToken {
     public void setDeckID(String deckID) {
         this.deckID = deckID;
     }
-
 
     @Override
     public final boolean equals(Object o) {
