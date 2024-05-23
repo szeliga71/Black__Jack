@@ -344,7 +344,7 @@ public class DeckServisMetodsTest {
         List<Card> cards = new ArrayList<>();
         cards.add(new Card(6, HEARTS));
         cards.add(new Card(5, SPADES));
-        Assertions.assertEquals(cards.get(1), deckServisMetods.extractCardsFromJsonArray(jsonArray).get(1));
+        Assertions.assertEquals(cards.get(1), deckServisMetods.extractCardsFromJsonArray(jsonArray));
 
     }
 
@@ -442,7 +442,7 @@ public class DeckServisMetodsTest {
 
         String happyJson = response.body();
 
-        Assertions.assertEquals(cards.get(1), deckMapper.cardMapper(happyJson).get(1));
+        Assertions.assertEquals(cards.get(1), deckMapper.cardMapper(happyJson));
 
     }
 

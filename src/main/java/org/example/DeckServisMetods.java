@@ -86,7 +86,7 @@ public class DeckServisMetods {
         }
     }
 
-    public List<Card> parseCards(String json) {
+    public Card parseCards(String json) {
         try {
             JsonNode rootNode = MAPPER.readTree(json);
             JsonNode nodeArray = rootNode.get("cards");
@@ -100,14 +100,36 @@ public class DeckServisMetods {
         }
     }
 
-    public List<Card> extractCardsFromJsonArray(JsonNode nodeArray) {
+    public Card extractCardsFromJsonArray(JsonNode nodeArray) {
         List<Card> cards = new ArrayList<>();
         for (JsonNode node : nodeArray) {
             int value = valueFromStringToInt(node.get("value").asText());
             Suit suit = Suit.fromStringtoSuit(node.get("suit").asText());
             cards.add(new Card(value, suit));
         }
-        return cards;
+        return cards.get(0);
+    }
+    public Card parseCard(String json) {
+        try {
+            JsonNode rootNode = MAPPER.readTree(json);
+            JsonNode nodeArray = rootNode.get("cards");
+            if (!nodeArray.isArray()) {
+                throw new IllegalArgumentException("To nie jest tablica kart");
+            } else {
+                return extractCardFrom(nodeArray);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Blad w parsowaniu Json", e);
+        }
+    }
+    public Card extractCardFrom(JsonNode nodeArray) {
+
+      JsonNode firstNodeInArray=nodeArray.get(0);
+
+      int value = valueFromStringToInt(firstNodeInArray.get("value").asText());
+            Suit suit = Suit.fromStringtoSuit(firstNodeInArray.get("suit").asText());
+
+        return new Card(value,suit);
     }
 
 }
