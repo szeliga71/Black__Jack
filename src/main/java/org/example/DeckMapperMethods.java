@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeckServisMetods {
+public class DeckMapperMethods {
 
     private final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -25,12 +25,12 @@ public class DeckServisMetods {
 
     public void validateJson(String json) {
         if (json == null || json.isEmpty()) {
-            throw new IllegalArgumentException("json jest nieprawidlowy ");
+            throw new IllegalArgumentException(" The provided JSON is emty or null ");
         }
         try {
             MAPPER.readTree(json);
         } catch (JsonProcessingException e) {
-            throw new IllegalArgumentException("json jest nieprawidlowy 2 ");
+            throw new IllegalArgumentException(" Failed to parse JSON: invalid file or invalid file format ");
         }
     }
 
@@ -39,7 +39,8 @@ public class DeckServisMetods {
             JsonNode node = MAPPER.readTree(json);
             return node.get("remaining").asInt();
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to parse JSON: invalid file format or missing \"remaining\" field ", e) {
+            };
         }
     }
 
@@ -58,7 +59,7 @@ public class DeckServisMetods {
 
     public int valueFromStringToInt(String valueFromJson) {
         if (valueFromJson == null || valueFromJson.isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(" The provided file is emty or null ");
         }
         valueFromJson = valueFromJson.toLowerCase();
         valueFromJson = valueFromJson.trim();
@@ -72,8 +73,9 @@ public class DeckServisMetods {
                 return cardValueSchema().get(valueFromJson.trim());
             }
         } catch (NumberFormatException e) {
+            System.out.println(" Failed to parse the value to an integer ");
         }
-        throw new IllegalArgumentException("Nieprawidlowe wartosci opisujace karty");
+        throw new IllegalArgumentException("Invalid values describing cards in the provided JSON");
     }
 
     public DeckToken parseIdFromJson(String json) {
@@ -82,57 +84,64 @@ public class DeckServisMetods {
             String nodeDeckId = node.get("deck_id").asText();
             return new DeckToken(nodeDeckId);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to parse JSON: invalid file format or missing \"deck_id\" field ", e);
         }
     }
 
-    public Card parseCards(String json) {
-        try {
-            JsonNode rootNode = MAPPER.readTree(json);
-            JsonNode nodeArray = rootNode.get("cards");
-            if (!nodeArray.isArray()) {
-                throw new IllegalArgumentException("To nie jest tablica kart");
-            } else {
-                return extractCardsFromJsonArray(nodeArray);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Blad w parsowaniu Json", e);
-        }
-    }
-
-    public Card extractCardsFromJsonArray(JsonNode nodeArray) {
-        List<Card> cards = new ArrayList<>();
-        for (JsonNode node : nodeArray) {
-            int value = valueFromStringToInt(node.get("value").asText());
-            Suit suit = Suit.fromStringtoSuit(node.get("suit").asText());
-            cards.add(new Card(value, suit));
-        }
-        return cards.get(0);
-    }
     public Card parseCard(String json) {
         try {
             JsonNode rootNode = MAPPER.readTree(json);
             JsonNode nodeArray = rootNode.get("cards");
             if (!nodeArray.isArray()) {
-                throw new IllegalArgumentException("To nie jest tablica kart");
+                throw new IllegalArgumentException(" Failed to parse JSON: invalid file format or missing \"cards\" field ");
             } else {
-                return extractCardFrom(nodeArray);
+                return extractCardFromJSONArray(nodeArray);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Blad w parsowaniu Json", e);
+            throw new RuntimeException(" Failed to parse JSON ", e);
         }
     }
-    public Card extractCardFrom(JsonNode nodeArray) {
 
-      JsonNode firstNodeInArray=nodeArray.get(0);
-
-      int value = valueFromStringToInt(firstNodeInArray.get("value").asText());
+    public Card extractCardFromJSONArray(JsonNode nodeArray) {
+        if (nodeArray.isArray() && !nodeArray.isEmpty()) {
+            JsonNode firstNodeInArray = nodeArray.get(0);
+            int value = valueFromStringToInt(firstNodeInArray.get("value").asText());
             Suit suit = Suit.fromStringtoSuit(firstNodeInArray.get("suit").asText());
-
-        return new Card(value,suit);
+            return new Card(value, suit);
+        } else {
+            throw new IllegalArgumentException(" Failed to parse JSON: invalid nodeArray, or nodeArray is empty ");
+        }
     }
 
+    public List<Card> parseCardsList(String json) {
+        try {
+            JsonNode rootNode = MAPPER.readTree(json);
+            JsonNode nodeArray = rootNode.get("cards");
+            if (!nodeArray.isArray()) {
+                throw new IllegalArgumentException(" Failed to parse JSON: invalid file format or missing \"cards\" field ");
+            } else {
+                return extractCardsFromJsonArray(nodeArray);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(" Failed to parse JSON ", e);
+        }
+    }
+
+    public List<Card> extractCardsFromJsonArray(JsonNode nodeArray) {
+        if (nodeArray.isArray() && !nodeArray.isEmpty()) {
+            List<Card> cards = new ArrayList<>();
+            for (JsonNode node : nodeArray) {
+                int value = valueFromStringToInt(node.get("value").asText());
+                Suit suit = Suit.fromStringtoSuit(node.get("suit").asText());
+                cards.add(new Card(value, suit));
+            }
+            return cards;
+        } else {
+            throw new IllegalArgumentException(" Failed to parse JSON: invalid nodeArray, or nodeArray is empty ");
+        }
+    }
 }
+
 
 
 
