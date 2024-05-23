@@ -424,11 +424,12 @@ public class DeckMapperTriggersMethodsTest {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            deckMapperMethods.extractCardsFromJsonArray(jsonArray);
+        });
+        String exceptionText=" Failed to parse JSON: invalid nodeArray, or nodeArray is empty ";
 
-        List<Card> cards = new ArrayList<>();
-
-        Assertions.assertEquals(cards, deckMapperMethods.extractCardsFromJsonArray(jsonArray));
-
+        Assertions.assertEquals(exceptionText, exception.getMessage());
     }
 
     @Test

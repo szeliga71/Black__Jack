@@ -49,13 +49,13 @@ public class DeckApiHandlerTest {
     @Test
     void drawCardsIncorrectFirstArgument() {
 
-        Assertions.assertThrows(RuntimeException.class, () -> handler.drawCards("xxxx", 2).statusCode());
+        Assertions.assertEquals(404,handler.drawCards("xxxx", 2).statusCode());
     }
 
     @Test
     void drawCardsIncorrectBothArguments() {
 
-        Assertions.assertThrows(RuntimeException.class, () -> handler.drawCards("xxxx", 0).statusCode());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> handler.drawCards("xxxx", 5).statusCode());
     }
 
     @Test
