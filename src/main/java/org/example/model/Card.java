@@ -1,4 +1,4 @@
-package org.example;
+package org.example.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -28,7 +28,7 @@ public class Card {
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof org.example.Card card)) return false;
+        if (!(o instanceof Card card)) return false;
 
         return getValue() == card.getValue() && getSuite().equals(card.getSuite());
     }

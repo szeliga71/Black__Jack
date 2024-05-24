@@ -1,5 +1,5 @@
 
-import org.example.DeckApiHandler;
+import org.example.api.DeckApiHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

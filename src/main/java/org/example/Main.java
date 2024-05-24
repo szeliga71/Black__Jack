@@ -1,5 +1,9 @@
 package org.example;
 
+import org.example.api.DeckApiHandler;
+import org.example.api.DeckMapperMethods;
+import org.example.api.DeckMapperTriggers;
+
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!Data model mappers");

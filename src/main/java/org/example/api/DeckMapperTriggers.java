@@ -1,4 +1,7 @@
-package org.example;
+package org.example.api;
+
+import org.example.model.Card;
+import org.example.model.DeckToken;
 
 import java.util.List;
 

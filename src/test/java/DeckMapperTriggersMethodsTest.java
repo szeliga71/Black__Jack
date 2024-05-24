@@ -3,10 +3,10 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.Card;
-import org.example.DeckMapperMethods;
-import org.example.DeckMapperTriggers;
-import org.example.DeckToken;
+import org.example.model.Card;
+import org.example.api.DeckMapperMethods;
+import org.example.api.DeckMapperTriggers;
+import org.example.model.DeckToken;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,8 +17,8 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.example.Suit.HEARTS;
-import static org.example.Suit.SPADES;
+import static org.example.model.Suit.HEARTS;
+import static org.example.model.Suit.SPADES;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
