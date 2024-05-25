@@ -12,12 +12,10 @@ public class VCSFileCreator {
     private LocalTime time;
     private final DateTimeFormatter formatter;
 
-
     public VCSFileCreator() {
 
         this.time = LocalTime.now();
         this.formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-
     }
 
     private Map<String, Integer> VCSFormatSchema() {
@@ -34,7 +32,7 @@ public class VCSFileCreator {
 
     public String createVCSContent(GameData gameData) {
 
-
+        if(gameData!=null){
         String header = "sesja z godziny  " + time.format(formatter) + ": " + "houseScore,playerScore,playerPoints,changeInPoints,playerWin\n";
         String data = formatField("", "sesja z godziny") + "," +
                 formatField(gameData.getHouseScore(), "houseScore") + "," +
@@ -43,8 +41,8 @@ public class VCSFileCreator {
                 formatField(gameData.getChangeInPoints(), "changeInPoints") + "," +
                 formatField(gameData.isPlayerWin(), "playerWin") + ",";
 
-
-        return header + data + "\n";
+        return header + data + "\n";}
+        else {throw  new IllegalArgumentException("provided object gameData is null");}
     }
 
     private String formatField(Object value, String fieldName) {

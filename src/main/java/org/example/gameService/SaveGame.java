@@ -57,4 +57,9 @@ public class SaveGame {
             }
         }
     }
+
+
+    public void setGameHistoryFilePath(String gameHistoryFilePath) {
+        this.gameHistoryFilePath = gameHistoryFilePath;
+    }
 }
