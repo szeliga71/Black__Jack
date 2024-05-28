@@ -9,17 +9,13 @@ import java.util.Map;
 
 public class VCSFileCreator {
 
-    private LocalTime time;
-    private final DateTimeFormatter formatter;
+    private final TimeProvider timeProvider;
 
-    public VCSFileCreator() {
-
-        this.time = LocalTime.now();
-        this.formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    public VCSFileCreator(TimeProvider timeProvider) {
+        this.timeProvider = timeProvider;
     }
 
-    private Map<String, Integer> VCSFormatSchema() {
-
+    private static Map<String, Integer> VCSFormatSchema() {
         Map<String, Integer> schema = new HashMap<>();
         schema.put("houseScore", 10);
         schema.put("playerScore", 11);
@@ -31,21 +27,23 @@ public class VCSFileCreator {
     }
 
     public String createVCSContent(GameData gameData) {
-
-        if(gameData!=null){
-        String header = "sesja z godziny  " + time.format(formatter) + ": " + "houseScore,playerScore,playerPoints,changeInPoints,playerWin\n";
-        String data = formatField("", "sesja z godziny") + "," +
-                formatField(gameData.getHouseScore(), "houseScore") + "," +
-                formatField(gameData.getPlayerScore(), "playerScore") + "," +
-                formatField(gameData.getPlayerPoints(), "playerPoints") + "," +
-                formatField(gameData.getChangeInPoints(), "changeInPoints") + "," +
-                formatField(gameData.isPlayerWin(), "playerWin") + ",";
-
-        return header + data + "\n";}
-        else {throw  new IllegalArgumentException("provided object gameData is null");}
+        LocalTime time = timeProvider.getCurrentTime();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        if (gameData != null) {
+            String header = "sesja z godziny  " + time.format(formatter) + ": " + "houseScore,playerScore,playerPoints,changeInPoints,playerWin\n";
+            String data = formatField("", "sesja z godziny") + "," +
+                    formatField(gameData.getHouseScore(), "houseScore") + "," +
+                    formatField(gameData.getPlayerScore(), "playerScore") + "," +
+                    formatField(gameData.getPlayerPoints(), "playerPoints") + "," +
+                    formatField(gameData.getChangeInPoints(), "changeInPoints") + "," +
+                    formatField(gameData.isPlayerWin(), "playerWin") + ",";
+            return header + data + "\n";
+        } else {
+            throw new IllegalArgumentException("provided object gameData is null");
+        }
     }
 
-    private String formatField(Object value, String fieldName) {
+    private static String formatField(Object value, String fieldName) {
         int fieldLength = VCSFormatSchema().get(fieldName);
         String stringValue = String.valueOf(value);
         return stringValue + " ".repeat(fieldLength - stringValue.length());
