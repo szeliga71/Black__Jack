@@ -1,4 +1,4 @@
-import org.example.gameService.TimeProvider;
+import org.example.gameService.TimeDateProvider;
 import org.example.gameService.VCSFileCreator;
 import org.example.model.GameData;
 import org.junit.jupiter.api.Assertions;
@@ -17,16 +17,16 @@ import static org.mockito.Mockito.when;
 public class VCSFileCreatorTest {
 
     @Mock
-    private TimeProvider timeProvider;
+    private TimeDateProvider timeDateProvider;
     @InjectMocks
     private VCSFileCreator vcsFileCreator;
 
     @Test
     void createVCSContentHappyPath() {
         GameData gameData = new GameData(1, 2, 3, 4, true);
-        when(timeProvider.getCurrentTime()).thenReturn(LocalTime.of(10, 0, 0));
+        when(timeDateProvider.getCurrentTime()).thenReturn(LocalTime.of(10, 0, 0));
 
-        LocalTime time = timeProvider.getCurrentTime();
+        LocalTime time = timeDateProvider.getCurrentTime();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String timeInString = time.format(dateTimeFormatter);
         String expectedHeader = "sesja z godziny  " + timeInString + ": houseScore,playerScore,playerPoints,changeInPoints,playerWin\n";
@@ -41,9 +41,9 @@ public class VCSFileCreatorTest {
     @Test
     void createVCSContentEdgeValuesHappyPath1() {
         GameData gameData = new GameData(0, 0, 0, 0, false);
-        when(timeProvider.getCurrentTime()).thenReturn(LocalTime.of(23, 59, 59));
+        when(timeDateProvider.getCurrentTime()).thenReturn(LocalTime.of(23, 59, 59));
 
-        LocalTime time = timeProvider.getCurrentTime();
+        LocalTime time = timeDateProvider.getCurrentTime();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String timeInString = time.format(dateTimeFormatter);
 
@@ -59,9 +59,9 @@ public class VCSFileCreatorTest {
     @Test
     void createVCSContentEdgeValuesHappyPath2() {
         GameData gameData = new GameData(2147483647, 2147483647, 2147483647, 2147483647, true);
-        when(timeProvider.getCurrentTime()).thenReturn(LocalTime.of(0, 0, 0));
+        when(timeDateProvider.getCurrentTime()).thenReturn(LocalTime.of(0, 0, 0));
 
-        LocalTime time = timeProvider.getCurrentTime();
+        LocalTime time = timeDateProvider.getCurrentTime();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String timeInString = time.format(dateTimeFormatter);
 
