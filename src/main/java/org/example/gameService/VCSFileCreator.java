@@ -9,10 +9,10 @@ import java.util.Map;
 
 public class VCSFileCreator {
 
-    private final TimeProvider timeProvider;
+    private final TimeDateProvider timeDateProvider;
 
-    public VCSFileCreator(TimeProvider timeProvider) {
-        this.timeProvider = timeProvider;
+    public VCSFileCreator(TimeDateProvider timeDateProvider) {
+        this.timeDateProvider = timeDateProvider;
     }
 
     private static Map<String, Integer> VCSFormatSchema() {
@@ -27,7 +27,7 @@ public class VCSFileCreator {
     }
 
     public String createVCSContent(GameData gameData) {
-        LocalTime time = timeProvider.getCurrentTime();
+        LocalTime time = timeDateProvider.getCurrentTime();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         if (gameData != null) {
             String header = "sesja z godziny  " + time.format(formatter) + ": " + "houseScore,playerScore,playerPoints,changeInPoints,playerWin\n";
