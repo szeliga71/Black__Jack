@@ -16,17 +16,14 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class VCSFileCreatorTest {
 
-    @Mock
-    private TimeDateProvider timeDateProvider;
+
     @InjectMocks
     private VCSFileCreator vcsFileCreator;
 
     @Test
     void createVCSContentHappyPath() {
         GameData gameData = new GameData(1, 2, 3, 4, true);
-        when(timeDateProvider.getCurrentTime()).thenReturn(LocalTime.of(10, 0, 0));
-
-        LocalTime time = timeDateProvider.getCurrentTime();
+        LocalTime time = TimeDateProvider.getCurrentTime();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String timeInString = time.format(dateTimeFormatter);
         String expectedHeader = "sesja z godziny  " + timeInString + ": houseScore,playerScore,playerPoints,changeInPoints,playerWin\n";
@@ -41,9 +38,7 @@ public class VCSFileCreatorTest {
     @Test
     void createVCSContentEdgeValuesHappyPath1() {
         GameData gameData = new GameData(0, 0, 0, 0, false);
-        when(timeDateProvider.getCurrentTime()).thenReturn(LocalTime.of(23, 59, 59));
-
-        LocalTime time = timeDateProvider.getCurrentTime();
+        LocalTime time = TimeDateProvider.getCurrentTime();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String timeInString = time.format(dateTimeFormatter);
 
@@ -59,9 +54,7 @@ public class VCSFileCreatorTest {
     @Test
     void createVCSContentEdgeValuesHappyPath2() {
         GameData gameData = new GameData(2147483647, 2147483647, 2147483647, 2147483647, true);
-        when(timeDateProvider.getCurrentTime()).thenReturn(LocalTime.of(0, 0, 0));
-
-        LocalTime time = timeDateProvider.getCurrentTime();
+        LocalTime time = TimeDateProvider.getCurrentTime();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String timeInString = time.format(dateTimeFormatter);
 

@@ -6,14 +6,10 @@ import java.util.*;
 
 public class LoadGameHistory {
 
-    private static TimeDateProvider timeDateProvider = new TimeDateProvider();
+    private static final TimeDateProvider timeDateProvider = new TimeDateProvider();
     private static final String mainPath = "src/main/GameHistory";
 
-    public static void setTimeDateProvider(TimeDateProvider provider) {
-        timeDateProvider = provider;
-    }
-
-    public static String allGameFiles(List<File> files) {
+    public static String getAllGameFiles(List<File> files) {
         StringBuilder sb = new StringBuilder();
         if (files == null) {
             throw new IllegalArgumentException("Please provide a valid argument");
@@ -37,7 +33,7 @@ public class LoadGameHistory {
             filesInDirectory = Arrays.asList(Objects.requireNonNull(directory.listFiles()));
             filesInDirectory.sort(Comparator.comparing(File::getName));
         } else {
-            System.out.println("The path to directory or the directory is invalid");
+            throw new IllegalArgumentException("The path to directory or the directory is invalid");
         }
         return filesInDirectory;
     }
@@ -55,15 +51,11 @@ public class LoadGameHistory {
         return new File(createPathToFile(date));
     }
 
-    public static String gameResultFromSpecifiedDate(File searchedFile) {
+    public static String gameResultFromSpecifiedDate(File searchedFile) throws FileNotFoundException {
         if (searchedFile != null && searchedFile.exists()) {
             return readFromFile(searchedFile);
         } else {
-            try {
-                throw new FileNotFoundException("Provided file does not exist");
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException("Provided file does not exist or used wrong path name to file", e);
-            }
+                throw new FileNotFoundException("Provided file does not exist or used wrong path name to file");
         }
     }
 

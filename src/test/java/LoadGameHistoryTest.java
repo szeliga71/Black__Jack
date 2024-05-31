@@ -19,8 +19,6 @@ public class LoadGameHistoryTest {
 
     @Mock
     private Scanner scanner;
-    @Mock
-    TimeDateProvider mockTimeDateProvider;
 
     private File directory = new File("src/main/TestHistory/");
 
@@ -60,22 +58,22 @@ public class LoadGameHistoryTest {
     }
 
     @Test
-    void showAllGameFilesTestNullArgument() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> LoadGameHistory.allGameFiles(null));
+    void showGetAllGameFilesTestNullArgument() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> LoadGameHistory.getAllGameFiles(null));
     }
 
     @Test
-    void showAllGameFilesTestNullArgument2() {
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> LoadGameHistory.allGameFiles(null));
+    void showGetAllGameFilesTestNullArgument2() {
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> LoadGameHistory.getAllGameFiles(null));
         String exceptMessage = "Please provide a valid argument";
         Assertions.assertEquals(exceptMessage, exception.getMessage());
     }
 
     @Test
-    void showAllGameFilesTestEmptyList() {
+    void showGetAllGameFilesTestEmptyList() {
         List<File> files = new ArrayList<>();
         String info = "Historia rozgrywek nie posiada zapisanych zadnych sesji w plikach";
-        Assertions.assertEquals(info, LoadGameHistory.allGameFiles(files));
+        Assertions.assertEquals(info, LoadGameHistory.getAllGameFiles(files));
     }
 
     @Test
@@ -126,44 +124,50 @@ public class LoadGameHistoryTest {
 
     @Test
     void inputDateHappyPath() {
-        LocalDate mockDate = LocalDate.of(2004, 5, 15);
-        when(mockTimeDateProvider.inputDate(scanner)).thenReturn(mockDate);
-        LocalDate testDate = mockTimeDateProvider.inputDate(scanner);
-        Assertions.assertEquals(testDate, mockDate);
+        LocalDate actualDate = LocalDate.of(2024, 5, 15);
+        when(scanner.nextLine()).thenReturn("15", "5", "2024");
+        LocalDate testDate = TimeDateProvider.inputDate(scanner);
+        Assertions.assertEquals(testDate, actualDate);
     }
 
     @Test
     void inputDateInvalidDay() {
-        LocalDate testDate = mockTimeDateProvider.inputDate(scanner);
-        Assertions.assertNotEquals(LocalDate.of(2004, 5, 15), testDate);
+        when(scanner.nextLine()).thenReturn("30", "5", "2024");
+        LocalDate givenDate = LocalDate.of(2024, 5, 15);
+        LocalDate testDate = TimeDateProvider.inputDate(scanner);
+        Assertions.assertNotEquals(givenDate, testDate);
     }
 
     @Test
     void inputDateInvalidMonth() {
-        LocalDate testDate = mockTimeDateProvider.inputDate(scanner);
-        Assertions.assertNotEquals(LocalDate.of(2004, 12, 10), testDate);
+        when(scanner.nextLine()).thenReturn("15", "10", "2024");
+        LocalDate givenDate = LocalDate.of(2024, 5, 15);
+        LocalDate testDate = TimeDateProvider.inputDate(scanner);
+        Assertions.assertNotEquals(givenDate, testDate);
     }
 
     @Test
     void inputDateInvalidYear() {
-        LocalDate testDate = mockTimeDateProvider.inputDate(scanner);
-        Assertions.assertNotEquals(LocalDate.of(2024, 5, 15), testDate);
+        when(scanner.nextLine()).thenReturn("15", "5", "2004");
+        LocalDate givenDate = LocalDate.of(2024, 5, 15);
+        LocalDate testDate = TimeDateProvider.inputDate(scanner);
+        Assertions.assertNotEquals(givenDate, testDate);
     }
 
     @Test
     void gameResultFromSpecifiedDateTestIlnvalidArgument() {
         File invalidFile = new File("src/main/TestHistory/invalid.txt");
-        Assertions.assertThrows(RuntimeException.class, () -> LoadGameHistory.gameResultFromSpecifiedDate(invalidFile));
+        Assertions.assertThrows(FileNotFoundException.class, () -> LoadGameHistory.gameResultFromSpecifiedDate(invalidFile));
     }
 
     @Test
     void gameResultFromSpecifiedDateTestINullArgument() {
-        Assertions.assertThrows(RuntimeException.class, () -> LoadGameHistory.gameResultFromSpecifiedDate(null));
+        Assertions.assertThrows(FileNotFoundException.class, () -> LoadGameHistory.gameResultFromSpecifiedDate(null));
     }
 
     @Test
     void gameResultFromSpecifiedDateTestNullArgument2() {
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> LoadGameHistory.gameResultFromSpecifiedDate(null));
+        FileNotFoundException exception = Assertions.assertThrows(FileNotFoundException.class, () -> LoadGameHistory.gameResultFromSpecifiedDate(null));
         String exceptMessage = "Provided file does not exist or used wrong path name to file";
         Assertions.assertEquals(exceptMessage, exception.getMessage());
     }
@@ -171,7 +175,7 @@ public class LoadGameHistoryTest {
     @Test
     void gameResultFromSpecifiedDateTestInvalidArgument2() {
         File invalidFile = new File("src/main/TestHistory/invalid.txt");
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> LoadGameHistory.gameResultFromSpecifiedDate(invalidFile));
+        FileNotFoundException exception = Assertions.assertThrows(FileNotFoundException.class, () -> LoadGameHistory.gameResultFromSpecifiedDate(invalidFile));
         String exceptMessage = "Provided file does not exist or used wrong path name to file";
         Assertions.assertEquals(exceptMessage, exception.getMessage());
     }
@@ -186,7 +190,11 @@ public class LoadGameHistoryTest {
         String gameHistoryFilePathTest = file.getPath();
         String content = "test text TEST";
         writeToFile(content, gameHistoryFilePathTest);
-        Assertions.assertEquals(content, LoadGameHistory.gameResultFromSpecifiedDate(file));
+        try {
+            Assertions.assertEquals(content, LoadGameHistory.gameResultFromSpecifiedDate(file));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test

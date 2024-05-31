@@ -11,7 +11,7 @@ public class Main {
 
         List<File>gameFiles=LoadGameHistory.loadHistoryFile("src/main/GameHistory");
 
-        System.out.println(LoadGameHistory.allGameFiles(gameFiles));
+        System.out.println(LoadGameHistory.getAllGameFiles(gameFiles));
 
         //System.out.println(LoadGameHistory.gameResultFromSpecifiedDate());
         //LoadGameHistory.inputDate();

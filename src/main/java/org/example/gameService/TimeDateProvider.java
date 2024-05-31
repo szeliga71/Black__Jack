@@ -7,12 +7,15 @@ import java.util.Scanner;
 
 public class TimeDateProvider {
 
-    public LocalTime getCurrentTime() {
+    // konstruktor rzucajacy wyjatek kiedy proba stworzenia obiektu
+
+
+
+    public static LocalTime getCurrentTime() {
         return LocalTime.now();
     }
 
-    public LocalDate inputDate(Scanner scanner) {
-        //Scanner scanner = new Scanner(System.in);
+    public static LocalDate inputDate(Scanner scanner) {
         LocalDate date;
         while (true) {
             try {
@@ -26,7 +29,8 @@ public class TimeDateProvider {
                 int year = Integer.parseInt(scanner.nextLine());
 
                 date = LocalDate.of(year, month, day);
-                break;
+                return date;
+
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter valid number");
             } catch (IllegalArgumentException | DateTimeException e) {
@@ -35,6 +39,5 @@ public class TimeDateProvider {
                 System.out.println("An unexpected error occurred." + e.getMessage());
             }
         }
-        return date;
     }
 }
