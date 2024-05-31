@@ -7,8 +7,9 @@ import java.util.Scanner;
 
 public class TimeDateProvider {
 
-    // konstruktor rzucajacy wyjatek kiedy proba stworzenia obiektu
-
+    public TimeDateProvider() {
+        throw new UnsupportedOperationException("Cannot instantiate this class");
+    }
 
 
     public static LocalTime getCurrentTime() {

@@ -6,7 +6,6 @@ import java.util.*;
 
 public class LoadGameHistory {
 
-    private static final TimeDateProvider timeDateProvider = new TimeDateProvider();
     private static final String mainPath = "src/main/GameHistory";
 
     public static String getAllGameFiles(List<File> files) {

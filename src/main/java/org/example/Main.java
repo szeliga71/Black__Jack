@@ -2,6 +2,7 @@ package org.example;
 
 
 import org.example.gameService.LoadGameHistory;
+
 import java.io.File;
 import java.util.List;
 
@@ -13,8 +14,6 @@ public class Main {
 
         System.out.println(LoadGameHistory.getAllGameFiles(gameFiles));
 
-        //System.out.println(LoadGameHistory.gameResultFromSpecifiedDate());
-        //LoadGameHistory.inputDate();
     }
 
     }
