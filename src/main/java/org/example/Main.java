@@ -1,19 +1,20 @@
 package org.example;
 
-
-import org.example.gameService.LoadGameHistory;
-
-import java.io.File;
-import java.util.List;
+import org.example.gamePlay.House;
+import org.example.gamePlay.GamePlay;
+import org.example.gamePlay.Player;
 
 public class Main {
     public static void main(String[] args) {
 
 
-        List<File>gameFiles=LoadGameHistory.loadHistoryFile("src/main/GameHistory");
 
-        System.out.println(LoadGameHistory.getAllGameFiles(gameFiles));
+
+        House house=new House();
+        Player player=new Player("Tom");
+        GamePlay gamePlay =new GamePlay(house,player);
+        gamePlay.start();
 
     }
 
-    }
+}
