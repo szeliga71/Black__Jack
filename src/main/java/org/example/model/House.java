@@ -12,7 +12,7 @@ public class House {
         hand = new ArrayList<>();
     }
 
-    public void addCardToHand(Card card){
+    public void addCardToHand(Card card) {
         hand.add(card);
     }
 
@@ -32,6 +32,7 @@ public class House {
             default -> value;
         };
     }
+
     public void showScoreMessage() {
         System.out.println(getClass().getSimpleName() + " otrzymal : " + hand);
         System.out.println(getClass().getSimpleName() + " Score : " + score);

@@ -8,13 +8,13 @@ import java.util.Scanner;
 public class Validators {
 
 
-    private Scanner scanner;
+    private final Scanner scanner;
 
     public Validators(Scanner scanner) {
         this.scanner = scanner;
     }
 
-    public  int enterNumberOfDeck(Scanner scanner) {
+    public int enterNumberOfDeck(Scanner scanner) {
         while (true) {
             try {
                 System.out.println("enter correct number of decks (4 - 8) ");
@@ -32,6 +32,7 @@ public class Validators {
             }
         }
     }
+
     public String makeDecision(Scanner scanner) {
         String decision;
         do {
@@ -44,7 +45,7 @@ public class Validators {
         return decision;
     }
 
-    public int getWager(Player player,Scanner scanner) {
+    public int getWager(Player player, Scanner scanner) {
         int wager;
         if (player != null) {
             while (true) {
@@ -64,6 +65,8 @@ public class Validators {
                     scanner.nextLine();
                 }
             }
-        }else{throw new IllegalArgumentException("player is null");}
+        } else {
+            throw new IllegalArgumentException("player is null");
+        }
     }
 }

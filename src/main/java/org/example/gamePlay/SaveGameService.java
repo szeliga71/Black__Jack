@@ -13,16 +13,16 @@ public class SaveGameService {
         return vcsFileCreator.createVCSContent(setGameDataAfterGame(player, house));
     }
 
-    public static void saveDataAfterGame(Player player,House house) {
+    public static void saveDataAfterGame(Player player, House house) {
         if (player != null && house != null) {
             SaveGame saveGame = new SaveGame();
             saveGame.saveGameHistory(createContentAfterGame(player, house));
-        }else{
+        } else {
             throw new IllegalArgumentException("provided arguments : player or house is null");
         }
     }
 
-    private static GameData setGameDataAfterGame(Player player,House house) {
+    private static GameData setGameDataAfterGame(Player player, House house) {
         return new GameData(house.getScore(), player.getScore(), player.getPlayerPoints(), 100 - player.getPlayerPoints(), player.isPlayerWin());
     }
 }

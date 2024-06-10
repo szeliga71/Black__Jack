@@ -13,6 +13,7 @@ public class DeckService {
     public String getJsonFromDeckAfterDrawCard(String deckId) {
         return deckApiHandler.drawCards(deckId, 1).body();
     }
+
     public String getJsonFromNewDeck(int numberOfDeck) {
         return deckApiHandler.getShuffledDecks(numberOfDeck).body();
     }
