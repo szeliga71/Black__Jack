@@ -1,14 +1,48 @@
-package org.example.gameService;
+import org.example.gamePlay.SaveGameService;
+import org.example.model.House;
+import org.example.model.Player;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import org.example.model.GameData;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
+public class SaveDataAfterGameTest {
 
-public class VCSFileCreator {
+    @Test
+    void saveDataAfterGameNullFirstArgumentTest() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> SaveGameService.saveDataAfterGame(null, new House()));
+    }
 
+    @Test
+    void saveDataAfterGameNullSecondArgumentTest() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> SaveGameService.saveDataAfterGame(new Player("Tom"), null));
+    }
+
+    @Test
+    void saveDataAfterGameNullArgumentsTest() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> SaveGameService.saveDataAfterGame(null, null));
+    }
+}
+
+/*
+private static String createContentAfterGame(Player player, House house) {
+    VCSFileCreator vcsFileCreator = new VCSFileCreator();
+    return vcsFileCreator.createVCSContent(setGameDataAfterGame(player, house));
+}
+
+
+    public static void saveDataAfterGame(Player player,House house) {
+        if (player != null && house != null) {
+            SaveGame saveGame = new SaveGame();
+            saveGame.saveGameHistory(createContentAfterGame(player, house));
+        }else{
+            throw new IllegalArgumentException("privided arguments : player or house is null");
+        }
+    }
+
+private static GameData setGameDataAfterGame(Player player, House house) {
+    return new GameData(house.getScore(), player.getScore(), player.getPlayerPoints(), 100 - player.getPlayerPoints(), player.isPlayerWin());
+}
+}
     private static Map<String, Integer> VCSFormatSchema() {
         Map<String, Integer> schema = new HashMap<>();
         schema.put("houseScore", 10);
@@ -42,4 +76,4 @@ public class VCSFileCreator {
         String stringValue = String.valueOf(value);
         return stringValue + " ".repeat(fieldLength - stringValue.length());
     }
-}
+*/

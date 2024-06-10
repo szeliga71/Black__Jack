@@ -27,7 +27,7 @@ public class LoadGameHistory {
 
     public static List<File> loadHistoryFile(String pathToDirectory) {
         File directory = new File(pathToDirectory);
-        List<File> filesInDirectory = new ArrayList<>();
+        List<File> filesInDirectory;
         if (directory.isDirectory()) {
             filesInDirectory = Arrays.asList(Objects.requireNonNull(directory.listFiles()));
             filesInDirectory.sort(Comparator.comparing(File::getName));

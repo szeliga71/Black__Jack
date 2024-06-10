@@ -43,7 +43,7 @@ public class SaveGame {
                 throw new RuntimeException("Error writting to file", e);
             }
         } else {
-            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(gameHistoryFilePath));) {
+            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(gameHistoryFilePath))) {
                 bufferedWriter.write(content);
             } catch (IOException e) {
                 throw new RuntimeException("Error writting to new file", e);

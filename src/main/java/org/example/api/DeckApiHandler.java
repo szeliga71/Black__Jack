@@ -41,7 +41,6 @@ public class DeckApiHandler {
         } else if (deckId == null || deckId.isEmpty()) {
             throw new IllegalArgumentException("prosze podac wlasciwy identyfikator talii");
         } else {
-
             String drawCardsURL = drawCardsBaseURL + deckId + "/draw/?count=" + count;
             try {
                 HttpRequest request = HttpRequest.newBuilder(new URI(drawCardsURL)).GET().build();

@@ -1,4 +1,4 @@
-package org.example.gamePlay;
+package org.example.model;
 
 import java.util.ArrayList;
 

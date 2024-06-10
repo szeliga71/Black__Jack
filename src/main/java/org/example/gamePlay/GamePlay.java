@@ -1,17 +1,22 @@
 package org.example.gamePlay;
 
 
+import org.example.model.Card;
+import org.example.model.House;
+import org.example.model.Player;
+
 import java.util.Scanner;
 
 public class GamePlay {
 
-    private final Validators validators = new Validators();
+    private final DeckService deckService=new DeckService();
+    private final Validators validators = new Validators(new Scanner(System.in));
     private final Player player;
     private final House house;
     private final Scanner scanner = new Scanner(System.in);
     private int wager = 0;
     private boolean wouldYouPlay = true;
-
+    private int remainingCards = 0;
 
     public GamePlay(House house, Player player) {
         this.house = house;
@@ -21,25 +26,22 @@ public class GamePlay {
     public void start() {
         String deckId = startNewGame();
         while (wouldYouPlay && player.getPlayerPoints() > 0) {
-            if (player.getRemainigCards() < 2) {
-                deckId = isEnoughCardInDeck();
+            if (remainingCards < 2) {
+                deckId=ifNotEnoughCardInDeck();
             }
             promptForNewGame(deckId);
         }
-    }
-
-    private String isEnoughCardInDeck() {
-        return player.getNewDeckAndDeckId(player.getJsonFromNewDeck(validators.enterNumberOfDeck()));
     }
 
     private String startNewGame() {
         player.setPlayerPoints(100);
         System.out.println(" Player otrzymuje 100 punktow ! ");
         wouldYouPlay = true;
-        String json = house.getJsonFromNewDeck(validators.enterNumberOfDeck());
-        return house.getNewDeckAndDeckId(json);
-    }
+        String json = deckService.getJsonFromNewDeck(validators.enterNumberOfDeck(new Scanner(System.in)));
+        remainingCards=deckService.getNumbersOfRemainigCardsFromHttpResponse(json);
+        return deckService.getNewDeckAndDeckId(json);
 
+    }
 
     private void promptForNewGame(String deckId) {
         System.out.println(" Witaj w nowej rozgrywce ! W tym momencie mozesz zakonczyc gre (press \"K\") lub rozpoczac obstawianie (press \"G\")");
@@ -58,16 +60,14 @@ public class GamePlay {
 
     private void startNewRund(String deckId) {
         resetGameRund();
-        wager = validators.getWager(player);
+        wager = validators.getWager(player,new Scanner(System.in));
         drawInitialCards(deckId);
         boolean answer = true;
         while (answer) {
-
-            if (player.getRemainigCards() < 2) {
-                deckId = isEnoughCardInDeck();
+            if (remainingCards < 2) {
+                deckId=ifNotEnoughCardInDeck();
             }
-
-            String decision = validators.makeDecision();
+            String decision = validators.makeDecision(new Scanner(System.in));
             if (decision.equals("g")) {
                 answer = handlePlayerDraw(deckId);
             } else if (decision.equals("p")) {
@@ -75,17 +75,39 @@ public class GamePlay {
             }
         }
     }
-
-    private void drawInitialCards(String deckId) {
-        player.drawCard(deckId);
-        house.drawCard(deckId);
+    private String ifNotEnoughCardInDeck() {
+        String json= deckService.getJsonFromNewDeck(validators.enterNumberOfDeck(new Scanner(System.in)));
+        return deckService.getNewDeckAndDeckId(json);
     }
 
+    private void playerDrawCard(String deckId){  String json=deckService.getJsonFromDeckAfterDrawCard(deckId);
+        Card card=deckService.getCardFromJsonAfterDrawCardFromDeck(json);
+        player.addCardToHand(card);
+        player.setScore(player.countScore(player.getHand()));
+        player.showScoreMessage();
+
+        remainingCards=deckService.getNumbersOfRemainigCardsFromHttpResponse(json);
+    }
+
+    private void houseDrawCard(String deckId){
+        String json=deckService.getJsonFromDeckAfterDrawCard(deckId);
+        Card card=deckService.getCardFromJsonAfterDrawCardFromDeck(json);
+        house.addCardToHand(card);
+        house.setScore(house.countScore(house.getHand()));
+        house.showScoreMessage();
+
+        remainingCards=deckService.getNumbersOfRemainigCardsFromHttpResponse(json);
+    }
+
+    private void drawInitialCards(String deckId) {
+        playerDrawCard(deckId);
+        houseDrawCard(deckId);
+    }
 
     private boolean handlePlayerDraw(String deckId) {
-        player.drawCard(deckId);
+        playerDrawCard(deckId);
         if (!(house.getScore() > 16 && house.getScore() < 21)) {
-            house.drawCard(deckId);
+            houseDrawCard(deckId);
         }
         return checkGameOutcome();
     }
@@ -97,7 +119,7 @@ public class GamePlay {
         } else if (house.getScore() >= 17 && house.getScore() < 21 && player.getScore() < house.getScore()) {
             house.setScore(21);
         } else if (!(house.getScore() > 16 && house.getScore() < 21)) {
-            house.drawCard(deckId);
+            houseDrawCard(deckId);
         }
         return checkGameOutcome();
     }

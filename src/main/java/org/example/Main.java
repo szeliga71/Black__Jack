@@ -1,8 +1,8 @@
 package org.example;
 
-import org.example.gamePlay.House;
+import org.example.model.House;
 import org.example.gamePlay.GamePlay;
-import org.example.gamePlay.Player;
+import org.example.model.Player;
 
 public class Main {
     public static void main(String[] args) {
