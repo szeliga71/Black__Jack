@@ -11,7 +11,6 @@ public class Player extends House {
     public Player(String nick) {
         this.nick = nick;
         playerWin = false;
-        new ArrayList<>();
     }
 
     public String getNick() {

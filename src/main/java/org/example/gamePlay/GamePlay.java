@@ -35,8 +35,7 @@ public class GamePlay {
 
     private String startNewGame() {
         player.setPlayerPoints(100);
-        System.out.println(" Player otrzymuje 100 punktow ! ");
-        wouldYouPlay = true;
+        System.out.println(" Gracz otrzymuje 100 punktow ! ");
         String json = deckService.getJsonFromNewDeck(validators.enterNumberOfDeck(new Scanner(System.in)));
         remainingCards = deckService.getNumbersOfRemainigCardsFromHttpResponse(json);
         return deckService.getNewDeckAndDeckId(json);
@@ -180,13 +179,3 @@ public class GamePlay {
         player.setPlayerPoints(0);
     }
 }
-
-
-
-
-
-
-
-
-
-

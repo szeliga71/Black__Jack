@@ -2,6 +2,7 @@ package org.example.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class House {
 
@@ -12,16 +13,18 @@ public class House {
         hand = new ArrayList<>();
     }
 
-    public void addCardToHand(Card card) {
+    public void addCardToHand(Card card){
         hand.add(card);
     }
 
     public int countScore(List<Card> hand) {
         return (int) sumValuesOfCards(hand);
+
     }
 
     private long sumValuesOfCards(List<Card> cards) {
-        return cards.stream().mapToInt(this::numberValueFromCard).sum();
+        return cards.stream().collect(Collectors.summingInt(this::numberValueFromCard));
+
     }
 
     private int numberValueFromCard(Card card) {
@@ -32,7 +35,6 @@ public class House {
             default -> value;
         };
     }
-
     public void showScoreMessage() {
         System.out.println(getClass().getSimpleName() + " otrzymal : " + hand);
         System.out.println(getClass().getSimpleName() + " Score : " + score);
