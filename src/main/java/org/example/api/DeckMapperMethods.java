@@ -27,7 +27,7 @@ public class DeckMapperMethods {
 
     public void validateJson(String json) {
         if (json == null || json.isEmpty()) {
-            throw new IllegalArgumentException(" The provided JSON is emty or null ");
+            throw new IllegalArgumentException(" The provided JSON is empty or null ");
         }
         try {
             MAPPER.readTree(json);
@@ -61,7 +61,7 @@ public class DeckMapperMethods {
 
     public int valueFromStringToInt(String valueFromJson) {
         if (valueFromJson == null || valueFromJson.isEmpty()) {
-            throw new IllegalArgumentException(" The provided file is emty or null ");
+            throw new IllegalArgumentException(" The provided file is empty or null ");
         }
         valueFromJson = valueFromJson.toLowerCase();
         valueFromJson = valueFromJson.trim();

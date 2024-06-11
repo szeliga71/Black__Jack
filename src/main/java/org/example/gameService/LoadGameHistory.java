@@ -14,7 +14,7 @@ public class LoadGameHistory {
             throw new IllegalArgumentException("Please provide a valid argument");
         }
         if (files.isEmpty()) {
-            return "Historia rozgrywek nie posiada zapisanych zadnych sesji w plikach";
+            return "The game history does not contain any saved sessions in the files";
         } else {
             int i = 1;
             for (File file : files) {

@@ -35,7 +35,7 @@ public class GamePlay {
 
     private String startNewGame() {
         player.setPlayerPoints(100);
-        System.out.println(" Gracz otrzymuje 100 punktow ! ");
+        System.out.println("The player receives 100 points!");
         String json = deckService.getJsonFromNewDeck(validators.enterNumberOfDeck(new Scanner(System.in)));
         remainingCards = deckService.getNumbersOfRemainigCardsFromHttpResponse(json);
         return deckService.getNewDeckAndDeckId(json);
@@ -43,7 +43,7 @@ public class GamePlay {
     }
 
     private void promptForNewGame(String deckId) {
-        System.out.println(" Witaj w nowej rozgrywce ! W tym momencie mozesz zakonczyc gre (press \"K\") lub rozpoczac obstawianie (press \"G\")");
+        System.out.println(" Welcome to a new game! At this moment, you can end the game (press \"K\") or start betting (press \"G\").");
         String choice = scanner.nextLine().trim().toLowerCase();
         switch (choice) {
             case "g" -> {
@@ -54,7 +54,7 @@ public class GamePlay {
                 endGame();
                 SaveGameService.saveDataAfterGame(player, house);
             }
-            default -> System.out.println("BLAD!!!, prosze wprowadzic prawidlowa litere ! ");
+            default -> System.out.println("ERROR!!! Please enter the correct letter!");
         }
     }
 
@@ -129,35 +129,35 @@ public class GamePlay {
     private boolean checkGameOutcome() {
         boolean result = true;
         if (player.getScore() > 21 && house.getScore() > 21) {
-            System.out.println("OBIE  FURY both lost");
+            System.out.println("Both lost ! ");
             result = false;
         } else if (player.getScore() > 21) {
-            System.out.println(" House win playerScore>21");
+            System.out.println(" House win , playerScore>21");
             result = false;
         } else if (house.getScore() > 21) {
-            System.out.println("Player win houseScore>21");
+            System.out.println("Player win , houseScore>21");
             player.setPlayerPoints(player.getPlayerPoints() + (wager * 2));
             result = false;
         } else if (player.getScore() == house.getScore() && player.getScore() == 21) {
             if (player.getHand().size() > house.getHand().size()) {
-                System.out.println("House wins!");
+                System.out.println("House win !!!");
             } else if (player.getHand().size() < house.getHand().size()) {
-                System.out.println("Player wins!");
+                System.out.println("Player is a Winner !!!");
                 player.setPlayerPoints(player.getPlayerPoints() + (wager * 2));
             } else {
-                System.out.println("Push (tie).");
+                System.out.println(" Draw  Tie ");
                 player.setPlayerPoints(player.getPlayerPoints() + (wager));
             }
             result = false;
         } else if (player.getScore() == 21) {
-            System.out.println("Player wins with Blackjack!");
+            System.out.println("Player win with Blackjack!");
             player.setPlayerPoints(player.getPlayerPoints() + (wager * 2));
             result = false;
         } else if (house.getScore() == 21) {
-            System.out.println("House wins with Blackjack!");
+            System.out.println("House win with Blackjack!");
             result = false;
         } else if (house.getScore() >= 17 && house.getScore() < player.getScore()) {
-            System.out.println("Player wins!");
+            System.out.println("Player win!");
             player.setPlayerPoints(player.getPlayerPoints() + (wager * 2));
             result = false;
         }
@@ -174,7 +174,7 @@ public class GamePlay {
     }
 
     private void endGame() {
-        System.out.println("koniec gry ");
+        System.out.println("  END of Game  ");
         wouldYouPlay = false;
         player.setPlayerPoints(0);
     }

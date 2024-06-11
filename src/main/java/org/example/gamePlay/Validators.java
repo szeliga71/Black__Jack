@@ -23,11 +23,11 @@ public class Validators {
                     scanner.nextLine();
                     return numberOfDeck;
                 } else {
-                    System.out.println(" BLAD !!!, prosze wprowadzic liczbe naturalna z zakresu 4 do 8");
+                    System.out.println(" ERROR!!! Please enter a natural number between 4 and 8 ");
                     scanner.nextLine();
                 }
             } catch (InputMismatchException e) {
-                System.out.println(" BLAD !!!, prosze wprowadzic liczbe ");
+                System.out.println(" ERROR!!! Please enter a number ");
                 scanner.nextLine();
             }
         }
@@ -36,10 +36,10 @@ public class Validators {
     public String makeDecision(Scanner scanner) {
         String decision;
         do {
-            System.out.println(" czy gracz pasuje czy gra dalej ? P - pass , G - gra dalej ");
+            System.out.println(" Does the player pass or continue? P - pass, G - continue ");
             decision = scanner.nextLine().trim().toLowerCase();
             if (!decision.equals("p") && !decision.equals("g")) {
-                System.out.println("BLAD !!!, prosze podac prwidlowa litere aby dokonac wyboru opcji ");
+                System.out.println("ERROR!!! Please provide the correct letter to make a choice");
             }
         } while (!decision.equals("p") && !decision.equals("g"));
         return decision;
@@ -55,18 +55,18 @@ public class Validators {
                     if (wager > 0 && wager <= player.getPlayerPoints()) {
                         scanner.nextLine();
                         player.setPlayerPoints(player.getPlayerPoints() - wager);
-                        System.out.println("gracz ma punktow : " + player.getPlayerPoints());
+                        System.out.println("The player has points : " + player.getPlayerPoints());
                         return wager;
                     } else {
-                        System.out.println("BLAD !!!, Your wager is incorrect.Minimum You can wager is 1 and Maximum You can wager is : " + player.getPlayerPoints() + "\n");
+                        System.out.println("ERROR !!!, Your wager is incorrect.Minimum You can wager is 1 and Maximum You can wager is : " + player.getPlayerPoints() + "\n");
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println(" BLAD !!!, prosze wprowadzic liczbe naturalna nie wieksza od ilosci punktow na koncie");
+                    System.out.println(" ERROR!!!, please enter a natural number not exceeding the number of points in your account");
                     scanner.nextLine();
                 }
             }
         } else {
-            throw new IllegalArgumentException("player is null");
+            throw new IllegalArgumentException("object player is null");
         }
     }
 }

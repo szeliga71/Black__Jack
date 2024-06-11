@@ -36,7 +36,7 @@ public class House {
         };
     }
     public void showScoreMessage() {
-        System.out.println(getClass().getSimpleName() + " otrzymal : " + hand);
+        System.out.println(getClass().getSimpleName() + " received : " + hand);
         System.out.println(getClass().getSimpleName() + " Score : " + score);
     }
 
