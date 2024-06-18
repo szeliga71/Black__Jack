@@ -20,7 +20,7 @@ public class EnterNumberOfDeckTest {
     void enterNumberOfDeckHappyPathTest(){
         when(scanner.nextInt())
                 .thenReturn(5);
-        int expectedNumber=validators.enterNumberOfDeck(scanner);
+        int expectedNumber=validators.enterAmountOfDeck(scanner);
         int actualNumber=5;
         Assertions.assertEquals(actualNumber,expectedNumber);
     }
@@ -28,7 +28,7 @@ public class EnterNumberOfDeckTest {
     void enterNumberOfDeckTwoTimerWrongNumberTest(){
         when(scanner.nextInt())
                 .thenReturn(0,18,6);
-        int expectedNumber=validators.enterNumberOfDeck(scanner);
+        int expectedNumber=validators.enterAmountOfDeck(scanner);
         int actualNumber=6;
         Assertions.assertEquals(actualNumber,expectedNumber);
     }
@@ -37,7 +37,7 @@ public class EnterNumberOfDeckTest {
         when(scanner.nextInt())
                 .thenThrow(new InputMismatchException())
                 .thenReturn(5);
-        int expectedNumber=validators.enterNumberOfDeck(scanner);
+        int expectedNumber=validators.enterAmountOfDeck(scanner);
         int actualNumber=5;
         Assertions.assertEquals(actualNumber,expectedNumber);
     }

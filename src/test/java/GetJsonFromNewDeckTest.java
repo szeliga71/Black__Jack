@@ -15,6 +15,7 @@ public class GetJsonFromNewDeckTest {
 
     @Mock
     private DeckService deckServiceS;
+
     private final DeckService deckService = new DeckService();
 
     @Test
@@ -29,7 +30,7 @@ public class GetJsonFromNewDeckTest {
     @Test
     void getJsonFromNewDeckTooBigArgumentTest1() {
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> deckService.getJsonFromNewDeck(654));
-        String expectedMesage = "Proszę podać ilość talii z przedziału od 4 do 8";
+        String expectedMesage = "Please provide the number of decks from the range of 4 to 8";
         Assertions.assertEquals(expectedMesage, exception.getMessage());
     }
     @Test

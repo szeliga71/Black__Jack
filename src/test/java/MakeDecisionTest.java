@@ -21,7 +21,7 @@ public class MakeDecisionTest {
     @Test
     void makeDecisionHappyPathTest() {
         when(scanner.nextLine()).thenReturn("p");
-        String decision = validators.makeDecision(scanner);
+        String decision = validators.makeDecisionToPlayOrPass(scanner);
         String expectedString = "p";
         Assertions.assertEquals(decision, expectedString);
     }
@@ -29,7 +29,7 @@ public class MakeDecisionTest {
     @Test
     void makeDecisionHappyPathTest1() {
         when(scanner.nextLine()).thenReturn("g");
-        String decision = validators.makeDecision(scanner);
+        String decision = validators.makeDecisionToPlayOrPass(scanner);
         String expectedString = "g";
         Assertions.assertEquals(decision, expectedString);
     }
@@ -37,7 +37,7 @@ public class MakeDecisionTest {
     @Test
     void makeDecisionTwoTimeWrongLetterTest() {
         when(scanner.nextLine()).thenReturn("x", "c", "p");
-        String decision = validators.makeDecision(scanner);
+        String decision = validators.makeDecisionToPlayOrPass(scanner);
         String expectedString = "p";
         Assertions.assertEquals(decision, expectedString);
     }

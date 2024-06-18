@@ -25,6 +25,10 @@ public class GetJsonFromDeckAfterDrawCardTest {
         Assertions.assertThrows(IllegalArgumentException.class,()->deckService.getJsonFromDeckAfterDrawCard(""));
     }
     @Test
+    void getJsonFromDeckAfterDrawCardIllegalArgumentTest() {
+        Assertions.assertThrows(RuntimeException.class,()->deckService.getJsonFromDeckAfterDrawCard("cdhhhszz"));
+    }
+    @Test
     void getJsonFromDeckAfterDrawCardHappyPathTest() {
         String responseJson="{\n" +
                 "\"success\": true,\n" +
@@ -62,32 +66,3 @@ public class GetJsonFromDeckAfterDrawCardTest {
 
 
 }
-
-/*public String getJsonFromDeckAfterDrawCard(String deckId) {
-    return deckApiHandler.drawCards(deckId, 1).body();
-}
-
-    public HttpResponse<String> drawCards(String deckId, int count) {
-
-        if (count > 2) {
-            throw new IllegalArgumentException("chcesz za duzo kart !");
-
-        } else if (deckId == null || deckId.isEmpty()) {
-            throw new IllegalArgumentException("prosze podac wlasciwy identyfikator talii");
-        } else {
-            String drawCardsURL = drawCardsBaseURL + deckId + "/draw/?count=" + count;
-            try {
-                HttpRequest request = HttpRequest.newBuilder(new URI(drawCardsURL)).GET().build();
-                response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                if (response.statusCode() != 200) {
-                    System.out.println("Blad podczas pobierania :" + response.statusCode());
-                }
-                return response;
-            } catch (URISyntaxException | IOException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-
- */

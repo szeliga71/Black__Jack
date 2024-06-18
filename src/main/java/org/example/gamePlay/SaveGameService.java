@@ -25,4 +25,5 @@ public class SaveGameService {
     private static GameData setGameDataAfterGame(Player player, House house) {
         return new GameData(house.getScore(), player.getScore(), player.getPlayerPoints(), 100 - player.getPlayerPoints(), player.isPlayerWin());
     }
+
 }

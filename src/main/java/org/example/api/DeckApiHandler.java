@@ -18,13 +18,13 @@ public class DeckApiHandler {
     public HttpResponse<String> getShuffledDecks(int numberOfDecks) {
 
         if (!(numberOfDecks >= 4 && numberOfDecks <= 8)) {
-            throw new IllegalArgumentException("Proszę podać ilość talii z przedziału od 4 do 8");
+            throw new IllegalArgumentException("Please provide the number of decks from the range of 4 to 8");
         }
         try {
             HttpRequest request = HttpRequest.newBuilder(new URI(getSchuffleBaseURL + numberOfDecks)).GET().build();
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
-                System.out.println("Blad podczas pobierania :" + response.statusCode());
+                System.out.println("Error during retrieval :" + response.statusCode());
             }
             return response;
         } catch (URISyntaxException | IOException | InterruptedException e) {
@@ -36,25 +36,26 @@ public class DeckApiHandler {
     public HttpResponse<String> drawCards(String deckId, int count) {
 
         if (count > 2) {
-            throw new IllegalArgumentException("chcesz za duzo kart !");
+            throw new IllegalArgumentException("You want to draw too many cards!");
 
         } else if (deckId == null || deckId.isEmpty()) {
-            throw new IllegalArgumentException("prosze podac wlasciwy identyfikator talii");
-        } else {
+            throw new IllegalArgumentException("please provide right deck id ");
+        }
             String drawCardsURL = drawCardsBaseURL + deckId + "/draw/?count=" + count;
             try {
                 HttpRequest request = HttpRequest.newBuilder(new URI(drawCardsURL)).GET().build();
                 response = client.send(request, HttpResponse.BodyHandlers.ofString());
                 if (response.statusCode() != 200) {
-                    System.out.println("Blad podczas pobierania :" + response.statusCode());
+                    throw new RuntimeException("Error during retrieval : " + response.statusCode());
                 }
-                return response;
             } catch (URISyntaxException | IOException | InterruptedException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("An error occurred while drawing cards", e);
             }
-        }
-    }
 
+        return response; }
 }
+
+
+
 
 

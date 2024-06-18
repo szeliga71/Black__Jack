@@ -18,11 +18,11 @@ public class House {
     }
 
     public int countScore(List<Card> hand) {
-        return (int) sumValuesOfCards(hand);
+        return sumValuesOfCards(hand);
 
     }
 
-    private long sumValuesOfCards(List<Card> cards) {
+    private int sumValuesOfCards(List<Card> cards) {
         return cards.stream().collect(Collectors.summingInt(this::numberValueFromCard));
 
     }

@@ -102,7 +102,7 @@ public class DeckMapperTriggersMethodsTest {
     void validateJsonTestEmptyJson() {
         String emptyJson = "";
         Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> deckMapperMethods.validateJson(emptyJson));
-        Assertions.assertEquals(" The provided JSON is emty or null ", exception.getMessage());
+        Assertions.assertEquals(" The provided JSON is empty or null ", exception.getMessage());
     }
 
     @Test

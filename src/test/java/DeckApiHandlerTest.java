@@ -35,13 +35,13 @@ public class DeckApiHandlerTest {
     }
 
     @Test
-    void getDecksnvalidArgumentNegativeValue() {
+    void getDecksInvalidArgumentNegativeValue() {
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> handler.getShuffledDecks(-5));
     }
 
     @Test
-    void getDecksnvalidArgumentTooBigValue() {
+    void getDecksInvalidArgumentTooBigValue() {
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> handler.getShuffledDecks(100));
     }
@@ -49,7 +49,7 @@ public class DeckApiHandlerTest {
     @Test
     void drawCardsIncorrectFirstArgument() {
 
-        Assertions.assertEquals(404,handler.drawCards("xxxx", 2).statusCode());
+        Assertions.assertThrows(RuntimeException.class,()->handler.drawCards("xxxx", 2));
     }
 
     @Test

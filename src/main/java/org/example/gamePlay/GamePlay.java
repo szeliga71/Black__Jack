@@ -17,37 +17,42 @@ public class GamePlay {
     private int wager = 0;
     private boolean wouldYouPlay = true;
     private int remainingCards = 0;
+    private String deckId=null;
 
     public GamePlay(House house, Player player) {
         this.house = house;
         this.player = player;
+        this.deckId=getNewDeckId();
     }
 
     public void start() {
-        String deckId = startNewGame();
+        setStartingPoints();
         while (wouldYouPlay && player.getPlayerPoints() > 0) {
             if (remainingCards < 2) {
-                deckId = ifNotEnoughCardInDeck();
+                deckId = getNewDeckId();
             }
-            promptForNewGame(deckId);
+            promptForNewGame();
         }
     }
 
-    private String startNewGame() {
+    private void setStartingPoints() {
         player.setPlayerPoints(100);
         System.out.println("The player receives 100 points!");
-        String json = deckService.getJsonFromNewDeck(validators.enterNumberOfDeck(new Scanner(System.in)));
-        remainingCards = deckService.getNumbersOfRemainigCardsFromHttpResponse(json);
-        return deckService.getNewDeckAndDeckId(json);
-
     }
 
-    private void promptForNewGame(String deckId) {
+    public String getNewDeckId() {
+        int amountOfDecks=validators.enterAmountOfDeck(scanner);
+        String jsonReceivedAfterDownloadingNewDeck = deckService.getJsonFromNewDeck(amountOfDecks);
+        remainingCards = deckService.getNumbersOfRemainigCardsFromHttpResponse(jsonReceivedAfterDownloadingNewDeck);
+        return deckService.getNewDeckAndDeckId(jsonReceivedAfterDownloadingNewDeck);
+    }
+
+    private void promptForNewGame() {
         System.out.println(" Welcome to a new game! At this moment, you can end the game (press \"K\") or start betting (press \"G\").");
         String choice = scanner.nextLine().trim().toLowerCase();
         switch (choice) {
             case "g" -> {
-                startNewRund(deckId);
+                startNewRund();
                 SaveGameService.saveDataAfterGame(player, house);
             }
             case "k" -> {
@@ -58,30 +63,25 @@ public class GamePlay {
         }
     }
 
-    private void startNewRund(String deckId) {
+    private void startNewRund() {
         resetGameRund();
         wager = validators.getWager(player, new Scanner(System.in));
-        drawInitialCards(deckId);
+        drawInitialCards();
         boolean answer = true;
         while (answer) {
             if (remainingCards < 2) {
-                deckId = ifNotEnoughCardInDeck();
+                deckId = getNewDeckId();
             }
-            String decision = validators.makeDecision(new Scanner(System.in));
+            String decision = validators.makeDecisionToPlayOrPass(new Scanner(System.in));
             if (decision.equals("g")) {
-                answer = handlePlayerDraw(deckId);
+                answer = handlePlayerDraw();
             } else if (decision.equals("p")) {
-                answer = handlePlayerPass(deckId);
+                answer = handlePlayerPass();
             }
         }
     }
 
-    private String ifNotEnoughCardInDeck() {
-        String json = deckService.getJsonFromNewDeck(validators.enterNumberOfDeck(new Scanner(System.in)));
-        return deckService.getNewDeckAndDeckId(json);
-    }
-
-    private void playerDrawCard(String deckId) {
+    private void playerDrawCard() {
         String json = deckService.getJsonFromDeckAfterDrawCard(deckId);
         Card card = deckService.getCardFromJsonAfterDrawCardFromDeck(json);
         player.addCardToHand(card);
@@ -91,7 +91,7 @@ public class GamePlay {
         remainingCards = deckService.getNumbersOfRemainigCardsFromHttpResponse(json);
     }
 
-    private void houseDrawCard(String deckId) {
+    private void houseDrawCard() {
         String json = deckService.getJsonFromDeckAfterDrawCard(deckId);
         Card card = deckService.getCardFromJsonAfterDrawCardFromDeck(json);
         house.addCardToHand(card);
@@ -101,27 +101,27 @@ public class GamePlay {
         remainingCards = deckService.getNumbersOfRemainigCardsFromHttpResponse(json);
     }
 
-    private void drawInitialCards(String deckId) {
-        playerDrawCard(deckId);
-        houseDrawCard(deckId);
+    public void drawInitialCards() {
+        playerDrawCard();
+        houseDrawCard();
     }
 
-    private boolean handlePlayerDraw(String deckId) {
-        playerDrawCard(deckId);
+    private boolean handlePlayerDraw() {
+        playerDrawCard();
         if (!(house.getScore() > 16 && house.getScore() < 21)) {
-            houseDrawCard(deckId);
+            houseDrawCard();
         }
         return checkGameOutcome();
     }
 
-    private boolean handlePlayerPass(String deckId) {
+    private boolean handlePlayerPass() {
         if (house.getScore() >= 17 && house.getScore() < 21 && player.getScore() == house.getScore()) {
             house.setScore(21);
             player.setScore(21);
         } else if (house.getScore() >= 17 && house.getScore() < 21 && player.getScore() < house.getScore()) {
             house.setScore(21);
         } else if (!(house.getScore() > 16 && house.getScore() < 21)) {
-            houseDrawCard(deckId);
+            houseDrawCard();
         }
         return checkGameOutcome();
     }

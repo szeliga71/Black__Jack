@@ -72,7 +72,7 @@ public class LoadGameHistoryTest {
     @Test
     void showGetAllGameFilesTestEmptyList() {
         List<File> files = new ArrayList<>();
-        String info = "Historia rozgrywek nie posiada zapisanych zadnych sesji w plikach";
+        String info = "The game history does not contain any saved sessions in the files";
         Assertions.assertEquals(info, LoadGameHistory.getAllGameFiles(files));
     }
 

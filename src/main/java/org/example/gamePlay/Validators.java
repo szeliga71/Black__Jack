@@ -14,7 +14,7 @@ public class Validators {
         this.scanner = scanner;
     }
 
-    public int enterNumberOfDeck(Scanner scanner) {
+    public int enterAmountOfDeck(Scanner scanner) {
         while (true) {
             try {
                 System.out.println("enter correct number of decks (4 - 8) ");
@@ -33,7 +33,7 @@ public class Validators {
         }
     }
 
-    public String makeDecision(Scanner scanner) {
+    public String makeDecisionToPlayOrPass(Scanner scanner) {
         String decision;
         do {
             System.out.println(" Does the player pass or continue? P - pass, G - continue ");

@@ -37,20 +37,3 @@ public class GetNumbersOfRemainigCardsFromHttpResponseTest {
     }
 
 }
-/*public int getNumbersOfRemainigCardsFromHttpResponse(String jsonFromNewDeck) {
-    return deckMapperTriggers.remainingCardMapper(jsonFromNewDeck);
-}
-public int remainingCardMapper(String json) {
-        deckMapperMethods.validateJson(json);
-        return deckMapperMethods.parseRemainingCards(json);
-    }
- public int parseRemainingCards(String json) {
-        try {
-            JsonNode node = MAPPER.readTree(json);
-            return node.get("remaining").asInt();
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to parse JSON: invalid file format or missing \"remaining\" field ", e) {
-            };
-        }
-    }
- */

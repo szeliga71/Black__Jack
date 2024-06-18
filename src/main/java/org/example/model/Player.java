@@ -1,6 +1,5 @@
 package org.example.model;
 
-import java.util.ArrayList;
 
 public class Player extends House {
 
