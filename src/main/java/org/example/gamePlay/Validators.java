@@ -67,6 +67,7 @@ public class Validators {
             }
         } else {
             throw new IllegalArgumentException("object player is null");
+
         }
     }
 }
