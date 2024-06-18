@@ -1,4 +1,4 @@
-import org.example.gamePlay.GamePlay;
+
 import org.example.gamePlay.SaveGameService;
 import org.example.gameService.SaveGame;
 import org.example.model.House;
@@ -7,9 +7,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -20,8 +17,6 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.*;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 
