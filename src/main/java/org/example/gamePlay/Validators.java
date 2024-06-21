@@ -38,7 +38,7 @@ public class Validators {
         do {
             System.out.println(" Does the player pass or continue? P - pass, G - continue ");
             decision = scanner.nextLine().trim().toLowerCase();
-            if (!decision.equals("p") && !decision.equals("g")) {
+            if (!decision.equals("p") &&(!decision.equals("g"))) {
                 System.out.println("ERROR!!! Please provide the correct letter to make a choice");
             }
         } while (!decision.equals("p") && !decision.equals("g"));
