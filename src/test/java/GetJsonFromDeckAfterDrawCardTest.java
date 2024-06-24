@@ -1,4 +1,3 @@
-
 import org.example.gamePlay.DeckService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -57,12 +56,7 @@ public class GetJsonFromDeckAfterDrawCardTest {
                 "],\n" +
                 "\"remaining\": 20\n" +
                 "}";
-
         when(deckServiceS.getJsonFromDeckAfterDrawCard(anyString())).thenReturn(responseJson);
-
         Assertions.assertEquals(responseJson,deckServiceS.getJsonFromDeckAfterDrawCard(anyString()));
-
     }
-
-
 }

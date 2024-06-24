@@ -42,4 +42,3 @@ public class EnterNumberOfDeckTest {
         Assertions.assertEquals(actualNumber,expectedNumber);
     }
 }
-

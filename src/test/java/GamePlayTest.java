@@ -1,4 +1,3 @@
-
 import org.example.gamePlay.GamePlay;
 import org.example.gamePlay.Validators;
 import org.example.model.House;
@@ -65,7 +64,7 @@ public class GamePlayTest {
         when(validators.enterAmountOfDeck(scanner)).thenReturn(4);
         gamePlay.setWouldYouPlay(false);
         gamePlay.start();
-        Assertions.assertTrue(playerTest.getPlayerPoints()>0);
+        Assertions.assertTrue(playerTest.getPlayerPoints() > 0);
     }
     @Test
     void testGameEndsWhenPlayerChose_K() {

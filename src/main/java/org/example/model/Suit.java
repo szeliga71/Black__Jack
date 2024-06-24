@@ -1,6 +1,5 @@
 package org.example.model;
 
-
 public enum Suit {
 
     HEARTS, DIAMONDS, CLUBS, SPADES;
@@ -14,6 +13,4 @@ public enum Suit {
             default -> throw new IllegalArgumentException("Cannot parse " + text);
         };
     }
-
 }
-

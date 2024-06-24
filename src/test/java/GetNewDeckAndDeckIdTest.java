@@ -4,9 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.net.http.HttpResponse;
-
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -53,7 +51,6 @@ public class GetNewDeckAndDeckIdTest {
     }
     @Test
     void getNewDeckAndDeckRemainingCardsSetUpHappyPathTest2(){
-
         String responseJson="{\n" +
                 "    \"success\": true,\n" +
                 "    \"deck_id\": \"3p40paa87x90\",\n" +
@@ -61,10 +58,7 @@ public class GetNewDeckAndDeckIdTest {
                 "    \"remaining\": 62\n" +
                 "}";
         when(response.body()).thenReturn(responseJson);
-
         int expectingRemainingCards=62;
         Assertions.assertEquals(expectingRemainingCards,deckService.getNumbersOfRemainigCardsFromHttpResponse(response.body()));
-
     }
-
 }

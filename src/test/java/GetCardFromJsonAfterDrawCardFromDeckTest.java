@@ -1,4 +1,3 @@
-
 import org.example.gamePlay.DeckService;
 import org.example.model.Card;
 import org.example.model.Suit;
@@ -41,25 +40,20 @@ public class GetCardFromJsonAfterDrawCardFromDeckTest {
                 "],\n" +
                 "\"remaining\": 20\n" +
                 "}";
-
         Card card = new Card(6, Suit.HEARTS);
         Assertions.assertEquals(card, deckService.getCardFromJsonAfterDrawCardFromDeck(responseJson));
     }
-
     @Test
     void getCardFromJsonAfterDrawCardFromDeckNullArgumentTest() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> deckService.getJsonFromDeckAfterDrawCard(null));
     }
-
     @Test
     void getCardFromJsonAfterDrawCardFromDeckEmptyArgumentTest() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> deckService.getJsonFromDeckAfterDrawCard(""));
     }
-
     @Test
     void getCardFromJsonAfterDrawCardFromDeckIllegalArgumentTest2() {
         String illegalJson = "vvvb,HHHH,ii,k";
         Assertions.assertThrows(RuntimeException.class, () -> deckService.getJsonFromDeckAfterDrawCard(illegalJson));
     }
 }
-

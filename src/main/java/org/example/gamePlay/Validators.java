@@ -1,19 +1,16 @@
 package org.example.gamePlay;
 
 import org.example.model.Player;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Validators {
-
 
     private final Scanner scanner;
 
     public Validators(Scanner scanner) {
         this.scanner = scanner;
     }
-
     public int enterAmountOfDeck(Scanner scanner) {
         while (true) {
             try {
@@ -32,7 +29,6 @@ public class Validators {
             }
         }
     }
-
     public String makeDecisionToPlayOrPass(Scanner scanner) {
         String decision;
         do {
@@ -44,7 +40,6 @@ public class Validators {
         } while (!decision.equals("p") && !decision.equals("g"));
         return decision;
     }
-
     public int getWager(Player player, Scanner scanner) {
         int wager;
         if (player != null) {
@@ -67,7 +62,6 @@ public class Validators {
             }
         } else {
             throw new IllegalArgumentException("object player is null");
-
         }
     }
 }

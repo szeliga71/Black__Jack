@@ -24,7 +24,6 @@ public class LoadGameHistory {
             return sb.toString();
         }
     }
-
     public static List<File> loadHistoryFile(String pathToDirectory) {
         File directory = new File(pathToDirectory);
         List<File> filesInDirectory;
@@ -36,7 +35,6 @@ public class LoadGameHistory {
         }
         return filesInDirectory;
     }
-
     private static String createPathToFile(LocalDate date) {
         if (date != null) {
             String dateInText = date.toString();
@@ -45,11 +43,9 @@ public class LoadGameHistory {
             throw new IllegalArgumentException("Please provide a valid argument");
         }
     }
-
     public static File createFile(LocalDate date) {
         return new File(createPathToFile(date));
     }
-
     public static String gameResultFromSpecifiedDate(File searchedFile) throws FileNotFoundException {
         if (searchedFile != null && searchedFile.exists()) {
             return readFromFile(searchedFile);
@@ -57,7 +53,6 @@ public class LoadGameHistory {
                 throw new FileNotFoundException("Provided file does not exist or used wrong path name to file");
         }
     }
-
     private static String readFromFile(File file) {
         StringBuilder stringBuilder = new StringBuilder();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
@@ -76,5 +71,3 @@ public class LoadGameHistory {
         return stringBuilder.toString();
     }
 }
-
-

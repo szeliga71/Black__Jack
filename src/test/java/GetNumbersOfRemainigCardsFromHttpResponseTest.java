@@ -1,9 +1,7 @@
-import org.example.api.DeckMapperTriggers;
 import org.example.gamePlay.DeckService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.Mockito.when;
@@ -35,5 +33,4 @@ public class GetNumbersOfRemainigCardsFromHttpResponseTest {
                 "}";
         Assertions.assertEquals(52,deckService.getNumbersOfRemainigCardsFromHttpResponse(responseJson));
     }
-
 }

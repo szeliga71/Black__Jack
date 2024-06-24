@@ -55,4 +55,3 @@ public class GameData {
         this.playerWin = playerWin;
     }
 }
-

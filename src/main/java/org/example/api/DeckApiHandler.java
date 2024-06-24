@@ -14,9 +14,7 @@ public class DeckApiHandler {
     private final String getSchuffleBaseURL = "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=";
     private final String drawCardsBaseURL = "https://www.deckofcardsapi.com/api/deck/";
 
-
     public HttpResponse<String> getShuffledDecks(int numberOfDecks) {
-
         if (!(numberOfDecks >= 4 && numberOfDecks <= 8)) {
             throw new IllegalArgumentException("Please provide the number of decks from the range of 4 to 8");
         }
@@ -30,14 +28,11 @@ public class DeckApiHandler {
         } catch (URISyntaxException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-
     }
-
     public HttpResponse<String> drawCards(String deckId, int count) {
 
         if (count > 2) {
             throw new IllegalArgumentException("You want to draw too many cards!");
-
         } else if (deckId == null || deckId.isEmpty()) {
             throw new IllegalArgumentException("please provide right deck id ");
         }
@@ -51,11 +46,5 @@ public class DeckApiHandler {
             } catch (URISyntaxException | IOException | InterruptedException e) {
                 throw new RuntimeException("An error occurred while drawing cards", e);
             }
-
         return response; }
 }
-
-
-
-
-

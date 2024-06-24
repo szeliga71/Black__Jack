@@ -12,7 +12,6 @@ public class SaveGameService {
         VCSFileCreator vcsFileCreator = new VCSFileCreator();
         return vcsFileCreator.createVCSContent(setGameDataAfterGame(player, house));
     }
-
     public static void saveDataAfterGame(Player player, House house) {
         if (player != null && house != null) {
             SaveGame saveGame = new SaveGame();
@@ -21,9 +20,7 @@ public class SaveGameService {
             throw new IllegalArgumentException("provided arguments : player or house is null");
         }
     }
-
     private static GameData setGameDataAfterGame(Player player, House house) {
         return new GameData(house.getScore(), player.getScore(), player.getPlayerPoints(), 100 - player.getPlayerPoints(), player.isPlayerWin());
     }
-
 }

@@ -1,7 +1,5 @@
 package org.example.gameService;
-
 import org.example.model.GameData;
-
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -19,7 +17,6 @@ public class VCSFileCreator {
         schema.put("sesja z godziny", 26);
         return schema;
     }
-
     public String createVCSContent(GameData gameData) {
         LocalTime time = TimeDateProvider.getCurrentTime();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -36,7 +33,6 @@ public class VCSFileCreator {
             throw new IllegalArgumentException("provided object gameData is null");
         }
     }
-
     private static String formatField(Object value, String fieldName) {
         int fieldLength = VCSFormatSchema().get(fieldName);
         String stringValue = String.valueOf(value);

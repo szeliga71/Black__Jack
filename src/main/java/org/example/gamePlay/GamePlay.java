@@ -2,7 +2,6 @@ package org.example.gamePlay;
 import org.example.model.Card;
 import org.example.model.House;
 import org.example.model.Player;
-
 import java.util.Scanner;
 
 public class GamePlay {
@@ -17,13 +16,12 @@ public class GamePlay {
     private int remainingCards = 0;
     private String deckId = null;
 
-    public GamePlay(Scanner scanner,Validators validators,House house, Player player) {
-        this.scanner=scanner;
-        this.validators= validators;
+    public GamePlay(Scanner scanner, Validators validators, House house, Player player) {
+        this.scanner = scanner;
+        this.validators = validators;
         this.house = house;
         this.player = player;
     }
-
     public void start() {
         deckId = getNewDeckId();
         setStartingPoints();
@@ -75,7 +73,7 @@ public class GamePlay {
         }
     }
     private void resetGameRund() {
-        wager = validators.getWager(player,scanner);
+        wager = validators.getWager(player, scanner);
         house.setScore(0);
         player.setScore(0);
         house.getHand().clear();
@@ -158,47 +156,19 @@ public class GamePlay {
         }
         return result;
     }
-
     private void endGame() {
         System.out.println("  END of Game  ");
         wouldYouPlay = false;
         player.setPlayerPoints(0);
     }
-
-    public DeckService getDeckService() {
-        return deckService;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public House getHouse() {
-        return house;
-    }
-
-    public Scanner getScanner() {
-        return scanner;
-    }
-
-    public Validators getValidators() {
-        return validators;
-    }
-
     public int getWager() {
         return wager;
     }
-
     public boolean isWouldYouPlay() {
         return wouldYouPlay;
     }
-
     public int getRemainingCards() {
         return remainingCards;
-    }
-
-    public String getDeckId() {
-        return deckId;
     }
     public void setWouldYouPlay(boolean wouldYouPlay) {
         this.wouldYouPlay = wouldYouPlay;

@@ -1,12 +1,9 @@
-
 import org.example.gamePlay.DeckService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -19,10 +16,9 @@ public class GetJsonFromNewDeckTest {
     private final DeckService deckService = new DeckService();
 
     @Test
-    void getJsonFromNewDeckZeroArgumentTest()
-    {Assertions.assertThrows(IllegalArgumentException.class, () -> deckService.getJsonFromNewDeck(0));
+    void getJsonFromNewDeckZeroArgumentTest() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> deckService.getJsonFromNewDeck(0));
     }
-
     @Test
     void getJsonFromNewDeckTooBigArgumentTest() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> deckService.getJsonFromNewDeck(654));
@@ -53,7 +49,6 @@ public class GetJsonFromNewDeckTest {
         String actualJson = deckServiceS.getJsonFromNewDeck(4);
         Assertions.assertEquals(responseJson, actualJson);
     }
-
     @Test
     void getJsonFromNewDeckRemainingCardsSetUpHappyPathTest() {
         String responseJson = "{\n" +
@@ -67,7 +62,4 @@ public class GetJsonFromNewDeckTest {
         int actual=deckServiceS.getNumbersOfRemainigCardsFromHttpResponse(responseJson);
         Assertions.assertEquals(expectedR, actual);
     }
-
-
 }
-

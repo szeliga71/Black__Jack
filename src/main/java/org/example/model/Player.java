@@ -1,6 +1,4 @@
 package org.example.model;
-
-
 public class Player extends House {
 
     private final String nick;
@@ -11,7 +9,6 @@ public class Player extends House {
         this.nick = nick;
         playerWin = false;
     }
-
     public String getNick() {
         return nick;
     }
@@ -32,4 +29,3 @@ public class Player extends House {
         this.playerWin = playerWin;
     }
 }
-
