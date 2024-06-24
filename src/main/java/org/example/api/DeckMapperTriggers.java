@@ -29,5 +29,4 @@ public class DeckMapperTriggers {
         deckMapperMethods.validateJson(json);
         return deckMapperMethods.parseRemainingCards(json);
     }
-
 }

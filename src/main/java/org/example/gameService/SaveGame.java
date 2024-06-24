@@ -1,5 +1,4 @@
 package org.example.gameService;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -16,7 +15,6 @@ public class SaveGame {
         this.gameHistoryFilePath = createFileAndPathToFile(mainPath);
         this.file = new File(gameHistoryFilePath);
     }
-
     public void saveGameHistory(String content) {
         if (content != null && !content.isEmpty()) {
             writeToFile(content);
@@ -24,13 +22,11 @@ public class SaveGame {
             throw new IllegalArgumentException("Content added to file or for create ne file cannot be null or empty");
         }
     }
-
     private String createFileAndPathToFile(String mainPath) {
         LocalDate date = LocalDate.now();
         String dateInText = date.toString();
         return mainPath + dateInText + ".csv";
     }
-
     private void writeToFile(String content) {
         File directory = file.getParentFile();
         if (!directory.exists()) {
@@ -43,7 +39,7 @@ public class SaveGame {
                 throw new RuntimeException("Error writting to file", e);
             }
         } else {
-            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(gameHistoryFilePath));) {
+            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(gameHistoryFilePath))) {
                 bufferedWriter.write(content);
             } catch (IOException e) {
                 throw new RuntimeException("Error writting to new file", e);
@@ -51,4 +47,3 @@ public class SaveGame {
         }
     }
 }
-

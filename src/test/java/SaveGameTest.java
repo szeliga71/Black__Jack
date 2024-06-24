@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -13,7 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-
 
 @ExtendWith(MockitoExtension.class)
 public class SaveGameTest {
@@ -30,7 +28,6 @@ public class SaveGameTest {
     void cleanUp() {
         deleteTemporaryDirectoryAndFiles(new File("src/main/TestHistory/"));
     }
-
     private void deleteTemporaryDirectoryAndFiles(File file) {
         if (file.isDirectory()) {
             File[] files = file.listFiles();
@@ -42,31 +39,26 @@ public class SaveGameTest {
         }
         file.delete();
     }
-
     @Test
     void saveGameHistoryNullArgument() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> saveGame.saveGameHistory(null));
     }
-
     @Test
     void saveGameHistoryEmptyArgument() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> saveGame.saveGameHistory(""));
     }
-
     @Test
     void saveGameHistoryNullArgumentMessage() {
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> saveGame.saveGameHistory(null));
         String exceptionMessage = "Content added to file or for create ne file cannot be null or empty";
         Assertions.assertEquals(exceptionMessage, exception.getMessage());
     }
-
     @Test
     void saveGameHistoryEmptyArgumentMessage() {
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> saveGame.saveGameHistory(""));
         String exceptionMessage = "Content added to file or for create ne file cannot be null or empty";
         Assertions.assertEquals(exceptionMessage, exception.getMessage());
     }
-
     @Test
     void saveGameHistoryHappyPathCreateDirectory() {
         String testContent = "test text";
@@ -81,12 +73,9 @@ public class SaveGameTest {
         }
         Assertions.assertTrue(testFile.exists());
     }
-
     @Test
     void saveGameHistoryHappyPathContentCompare() {
-
         saveGame.saveGameHistory(testContent);
-
         File directory = file.getParentFile();
         if (!directory.exists()) {
             directory.mkdirs();
@@ -96,7 +85,6 @@ public class SaveGameTest {
         } catch (IOException e) {
             throw new RuntimeException("Error writting to file", e);
         }
-
         String readedFileContent = "";
         try {
             readedFileContent = Files.readString(testFile.toPath());

@@ -1,5 +1,4 @@
 package org.example.gameService;
-
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -11,7 +10,6 @@ public class TimeDateProvider {
         throw new UnsupportedOperationException("Cannot instantiate this class");
     }
 
-
     public static LocalTime getCurrentTime() {
         return LocalTime.now();
     }
@@ -22,16 +20,12 @@ public class TimeDateProvider {
             try {
                 System.out.println("Please enter a day (1-31): ");
                 int day = Integer.parseInt(scanner.nextLine());
-
                 System.out.println("Please enter a month (1-12): ");
                 int month = Integer.parseInt(scanner.nextLine());
-
                 System.out.println("Please enter a year(e.g,2023): ");
                 int year = Integer.parseInt(scanner.nextLine());
-
                 date = LocalDate.of(year, month, day);
                 return date;
-
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter valid number");
             } catch (IllegalArgumentException | DateTimeException e) {

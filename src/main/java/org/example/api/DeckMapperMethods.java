@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.model.Card;
 import org.example.model.DeckToken;
 import org.example.model.Suit;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,10 +24,9 @@ public class DeckMapperMethods {
             throw new RuntimeException(e);
         }
     }
-
     public void validateJson(String json) {
         if (json == null || json.isEmpty()) {
-            throw new IllegalArgumentException(" The provided JSON is emty or null ");
+            throw new IllegalArgumentException(" The provided JSON is empty or null ");
         }
         try {
             MAPPER.readTree(json);
@@ -36,7 +34,6 @@ public class DeckMapperMethods {
             throw new IllegalArgumentException(" Failed to parse JSON: invalid file or invalid file format ");
         }
     }
-
     public int parseRemainingCards(String json) {
         try {
             JsonNode node = MAPPER.readTree(json);
@@ -46,7 +43,6 @@ public class DeckMapperMethods {
             };
         }
     }
-
     private static Map<String, Integer> cardValueSchema() {
         Map<String, Integer> cardValues = new HashMap<>();
         for (int i = 2; i < 11; i++) {
@@ -59,10 +55,9 @@ public class DeckMapperMethods {
 
         return cardValues;
     }
-
     public int valueFromStringToInt(String valueFromJson) {
         if (valueFromJson == null || valueFromJson.isEmpty()) {
-            throw new IllegalArgumentException(" The provided file is emty or null ");
+            throw new IllegalArgumentException(" The provided file is empty or null ");
         }
         valueFromJson = valueFromJson.toLowerCase();
         valueFromJson = valueFromJson.trim();
@@ -80,7 +75,6 @@ public class DeckMapperMethods {
         }
         throw new IllegalArgumentException("Invalid values describing cards in the provided JSON");
     }
-
     public DeckToken parseIdFromJson(String json) {
         try {
             JsonNode node = MAPPER.readTree(json);
@@ -90,7 +84,6 @@ public class DeckMapperMethods {
             throw new RuntimeException("Failed to parse JSON: invalid file format or missing \"deck_id\" field ", e);
         }
     }
-
     public Card parseCard(String json) {
         try {
             JsonNode rootNode = MAPPER.readTree(json);
@@ -104,7 +97,6 @@ public class DeckMapperMethods {
             throw new RuntimeException(" Failed to parse JSON ", e);
         }
     }
-
     public Card extractCardFromJSONArray(JsonNode nodeArray) {
         if (nodeArray.isArray() && !nodeArray.isEmpty()) {
             JsonNode firstNodeInArray = nodeArray.get(0);
@@ -115,7 +107,6 @@ public class DeckMapperMethods {
             throw new IllegalArgumentException(" Failed to parse JSON: invalid nodeArray, or nodeArray is empty ");
         }
     }
-
     public List<Card> parseCardsList(String json) {
         try {
             JsonNode rootNode = MAPPER.readTree(json);
@@ -129,7 +120,6 @@ public class DeckMapperMethods {
             throw new RuntimeException(" Failed to parse JSON ", e);
         }
     }
-
     public List<Card> extractCardsFromJsonArray(JsonNode nodeArray) {
         if (nodeArray.isArray() && !nodeArray.isEmpty()) {
             List<Card> cards = new ArrayList<>();
@@ -144,9 +134,3 @@ public class DeckMapperMethods {
         }
     }
 }
-
-
-
-
-
-

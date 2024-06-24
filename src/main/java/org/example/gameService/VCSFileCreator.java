@@ -1,19 +1,11 @@
 package org.example.gameService;
-
 import org.example.model.GameData;
-
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
 public class VCSFileCreator {
-
-    private final TimeDateProvider timeDateProvider;
-
-    public VCSFileCreator(TimeDateProvider timeDateProvider) {
-        this.timeDateProvider = timeDateProvider;
-    }
 
     private static Map<String, Integer> VCSFormatSchema() {
         Map<String, Integer> schema = new HashMap<>();
@@ -25,9 +17,8 @@ public class VCSFileCreator {
         schema.put("sesja z godziny", 26);
         return schema;
     }
-
     public String createVCSContent(GameData gameData) {
-        LocalTime time = timeDateProvider.getCurrentTime();
+        LocalTime time = TimeDateProvider.getCurrentTime();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         if (gameData != null) {
             String header = "sesja z godziny  " + time.format(formatter) + ": " + "houseScore,playerScore,playerPoints,changeInPoints,playerWin\n";
@@ -42,7 +33,6 @@ public class VCSFileCreator {
             throw new IllegalArgumentException("provided object gameData is null");
         }
     }
-
     private static String formatField(Object value, String fieldName) {
         int fieldLength = VCSFormatSchema().get(fieldName);
         String stringValue = String.valueOf(value);
