@@ -50,9 +50,22 @@ public class GamePlayTest {
         Assertions.assertEquals(100, playerTest.getPlayerPoints());
     }
     @Test
-    void testGameEndsWhenPlayerPointsAreZero() {
+    void testGameEndsWhenPlayerPointsAreMoreThanZeroAndWouldYouPlayIsFalse() {
+        Player playerTest = new Player("testPlayer");
+        gamePlay = new GamePlay(scanner, validators, house, playerTest);
+        when(validators.enterAmountOfDeck(scanner)).thenReturn(8);
+        gamePlay.setWouldYouPlay(false);
         gamePlay.start();
         Assertions.assertFalse(gamePlay.isWouldYouPlay());
+    }
+    @Test
+    void testGameEndsWhenPlayerPointsAreMoreThanZero() {
+        Player playerTest = new Player("testPlayer");
+        gamePlay = new GamePlay(scanner, validators, house, playerTest);
+        when(validators.enterAmountOfDeck(scanner)).thenReturn(4);
+        gamePlay.setWouldYouPlay(false);
+        gamePlay.start();
+        Assertions.assertTrue(playerTest.getPlayerPoints()>0);
     }
     @Test
     void testGameEndsWhenPlayerChose_K() {
@@ -74,15 +87,4 @@ public class GamePlayTest {
         gamePlay.start();
         Assertions.assertEquals(0, playerTest.getPlayerPoints());
     }
-  /*  @Test
-    void testGameEndsWhenPlayerChose_g() {
-        Player playerTest = new Player("testPlayer");
-        gamePlay = new GamePlay(scanner, validators, house, playerTest);
-        when(validators.enterAmountOfDeck(scanner)).thenReturn(8);
-        gamePlay.setWouldYouPlay(true);
-        when(scanner.nextLine()).thenReturn("g");
-        when(validators.makeDecisionToPlayOrPass(scanner)).thenReturn("g");
-        gamePlay.start();
-        Assertions.assertEquals(0, playerTest.getPlayerPoints());
-    }*/
 }

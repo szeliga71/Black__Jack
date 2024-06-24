@@ -99,7 +99,7 @@ public class GamePlay {
         house.showScoreMessage();
         remainingCards = deckService.getNumbersOfRemainigCardsFromHttpResponse(json);
     }
-    public void drawInitialCards() {
+    private void drawInitialCards() {
         playerDrawCard();
         houseDrawCard();
     }
