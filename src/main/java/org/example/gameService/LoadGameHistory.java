@@ -8,24 +8,8 @@ public class LoadGameHistory {
 
     private static final String mainPath = "src/main/GameHistory";
 
-    public static String getAllGameFiles(List<File> files) {
-        StringBuilder sb = new StringBuilder();
-        if (files == null) {
-            throw new IllegalArgumentException("Please provide a valid argument");
-        }
-        if (files.isEmpty()) {
-            return "The game history does not contain any saved sessions in the files";
-        } else {
-            int i = 1;
-            for (File file : files) {
-                sb.append(i).append(". ").append(file.getName());
-                ++i;
-            }
-            return sb.toString();
-        }
-    }
-    public static List<File> loadHistoryFile(String pathToDirectory) {
-        File directory = new File(pathToDirectory);
+    public static List<File> loadHistoryFile(String mainPath) {
+        File directory = new File(mainPath);
         List<File> filesInDirectory;
         if (directory.isDirectory()) {
             filesInDirectory = Arrays.asList(Objects.requireNonNull(directory.listFiles()));
@@ -35,7 +19,7 @@ public class LoadGameHistory {
         }
         return filesInDirectory;
     }
-    private static String createPathToFile(LocalDate date) {
+    public static String createPathToFile(LocalDate date) {
         if (date != null) {
             String dateInText = date.toString();
             return mainPath + "/game history " + dateInText + ".csv";
@@ -46,7 +30,7 @@ public class LoadGameHistory {
     public static File createFile(LocalDate date) {
         return new File(createPathToFile(date));
     }
-    public static String gameResultFromSpecifiedDate(File searchedFile) throws FileNotFoundException {
+    public static String showGameResultFromSpecifiedDate(File searchedFile) throws FileNotFoundException {
         if (searchedFile != null && searchedFile.exists()) {
             return readFromFile(searchedFile);
         } else {

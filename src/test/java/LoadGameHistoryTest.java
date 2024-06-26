@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.util.*;
 import static org.mockito.Mockito.when;
 
-
 @ExtendWith(MockitoExtension.class)
 public class LoadGameHistoryTest {
 
@@ -24,6 +23,7 @@ public class LoadGameHistoryTest {
     public void cleanUp() {
         deleteTemporaryDirectoryAndFiles(new File("src/main/TestHistory/"));
     }
+
     private void deleteTemporaryDirectoryAndFiles(File file) {
         if (file.isDirectory()) {
             File[] files = file.listFiles();
@@ -50,22 +50,6 @@ public class LoadGameHistoryTest {
                 throw new RuntimeException("Error writting to new file", e);
             }
         }
-    }
-    @Test
-    void showGetAllGameFilesTestNullArgument() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> LoadGameHistory.getAllGameFiles(null));
-    }
-    @Test
-    void showGetAllGameFilesTestNullArgument2() {
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> LoadGameHistory.getAllGameFiles(null));
-        String exceptMessage = "Please provide a valid argument";
-        Assertions.assertEquals(exceptMessage, exception.getMessage());
-    }
-    @Test
-    void showGetAllGameFilesTestEmptyList() {
-        List<File> files = new ArrayList<>();
-        String info = "The game history does not contain any saved sessions in the files";
-        Assertions.assertEquals(info, LoadGameHistory.getAllGameFiles(files));
     }
     @Test
     void loadHistoryFileTestHappyPath1() {
@@ -134,22 +118,22 @@ public class LoadGameHistoryTest {
     @Test
     void gameResultFromSpecifiedDateTestIlnvalidArgument() {
         File invalidFile = new File("src/main/TestHistory/invalid.txt");
-        Assertions.assertThrows(FileNotFoundException.class, () -> LoadGameHistory.gameResultFromSpecifiedDate(invalidFile));
+        Assertions.assertThrows(FileNotFoundException.class, () -> LoadGameHistory.showGameResultFromSpecifiedDate(invalidFile));
     }
     @Test
     void gameResultFromSpecifiedDateTestINullArgument() {
-        Assertions.assertThrows(FileNotFoundException.class, () -> LoadGameHistory.gameResultFromSpecifiedDate(null));
+        Assertions.assertThrows(FileNotFoundException.class, () -> LoadGameHistory.showGameResultFromSpecifiedDate(null));
     }
     @Test
     void gameResultFromSpecifiedDateTestNullArgument2() {
-        FileNotFoundException exception = Assertions.assertThrows(FileNotFoundException.class, () -> LoadGameHistory.gameResultFromSpecifiedDate(null));
+        FileNotFoundException exception = Assertions.assertThrows(FileNotFoundException.class, () -> LoadGameHistory.showGameResultFromSpecifiedDate(null));
         String exceptMessage = "Provided file does not exist or used wrong path name to file";
         Assertions.assertEquals(exceptMessage, exception.getMessage());
     }
     @Test
     void gameResultFromSpecifiedDateTestInvalidArgument2() {
         File invalidFile = new File("src/main/TestHistory/invalid.txt");
-        FileNotFoundException exception = Assertions.assertThrows(FileNotFoundException.class, () -> LoadGameHistory.gameResultFromSpecifiedDate(invalidFile));
+        FileNotFoundException exception = Assertions.assertThrows(FileNotFoundException.class, () -> LoadGameHistory.showGameResultFromSpecifiedDate(invalidFile));
         String exceptMessage = "Provided file does not exist or used wrong path name to file";
         Assertions.assertEquals(exceptMessage, exception.getMessage());
     }
@@ -163,7 +147,7 @@ public class LoadGameHistoryTest {
         String content = "test text TEST";
         writeToFile(content, gameHistoryFilePathTest);
         try {
-            Assertions.assertEquals(content, LoadGameHistory.gameResultFromSpecifiedDate(file));
+            Assertions.assertEquals(content, LoadGameHistory.showGameResultFromSpecifiedDate(file));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
