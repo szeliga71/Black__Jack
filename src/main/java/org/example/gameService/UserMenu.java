@@ -15,7 +15,7 @@ public class UserMenu {
     private final Validators validators = new Validators(scanner);
     private final House house = new House();
 
-    public void lauchMenu() {
+    public void continueGame() {
 
         boolean menu = true;
         while (menu) {
