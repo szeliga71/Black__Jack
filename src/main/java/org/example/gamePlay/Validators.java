@@ -11,6 +11,7 @@ public class Validators {
     public Validators(Scanner scanner) {
         this.scanner = scanner;
     }
+
     public int enterAmountOfDeck(Scanner scanner) {
         while (true) {
             try {
@@ -29,17 +30,19 @@ public class Validators {
             }
         }
     }
+
     public String makeDecisionToPlayOrPass(Scanner scanner) {
         String decision;
         do {
             System.out.println(" Does the player pass or continue? P - pass, G - continue ");
             decision = scanner.nextLine().trim().toLowerCase();
-            if (!decision.equals("p") &&(!decision.equals("g"))) {
+            if (!decision.equals("p") && (!decision.equals("g"))) {
                 System.out.println("ERROR!!! Please provide the correct letter to make a choice");
             }
         } while (!decision.equals("p") && !decision.equals("g"));
         return decision;
     }
+
     public int getWager(Player player, Scanner scanner) {
         int wager;
         if (player != null) {
